@@ -1,3 +1,6 @@
+<?php 
+include("config/config.php");
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,11 +13,11 @@
     <div class="sidebar">
         <h2>LOGO</h2>
         <ul>
-            <li><a href="admin.html">Home</a></li>
-            <li><a href="admins.html">Admins</a></li>
-            <li><a href="orders.html">Orders</a></li>
-            <li><a href="foods.html">Foods</a></li>
-            <li><a href="books.html">Bookings</a></li>
+            <li><a href="admin.php">Home</a></li>
+            <li><a href="admins.php">Admins</a></li>
+            <li><a href="orders.php">Orders</a></li>
+            <li><a href="foods.php">Foods</a></li>
+            <li><a href="books.php">Bookings</a></li>
         </ul>
     </div>
 

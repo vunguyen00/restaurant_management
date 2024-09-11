@@ -1,13 +1,14 @@
 <?php
-$servername = "localhost";
+// Thay đổi các thông tin dưới đây để phù hợp với cấu hình của bạn
+$host = "localhost";
 $username = "root";
 $password = "";
-$dbname = "restaurantdb";
+$database = "restaurantdb";
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+$mysqli = new mysqli($host, $username, $password, $database);
 
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+// Kiểm tra kết nối
+if ($mysqli->connect_error) {
+    die("Connection failed: " . $mysqli->connect_error);
 }
+?>
