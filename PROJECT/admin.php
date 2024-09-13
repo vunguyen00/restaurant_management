@@ -4,6 +4,10 @@ include("config/config.php");
 // Lấy danh sách bàn từ cơ sở dữ liệu
 $tablesQuery = "SELECT table_id, table_number FROM restaurant_table";
 $tablesResult = $mysqli->query($tablesQuery);
+
+// Lấy danh sách món ăn từ cơ sở dữ liệu
+$menuQuery = "SELECT dish_id, dish_name FROM menu";
+$menuResult = $mysqli->query($menuQuery);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,73 +16,6 @@ $tablesResult = $mysqli->query($tablesQuery);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="admin.css">
-    <style>
-        .card {
-            padding: 20px;
-            margin: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            display: inline-block;
-            width: 150px;
-            text-align: center;
-            cursor: pointer;
-            position: relative;
-        }
-        .card.selected {
-            background-color: #f0f8ff;
-        }
-        .card-container {
-            margin-bottom: 20px;
-        }
-        .menu-items {
-            display: none;
-            margin-top: 20px;
-        }
-        .menu-items.active {
-            display: block;
-        }
-        .actions {
-            margin-bottom: 20px;
-        }
-        .actions button {
-            margin-right: 10px;
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgb(0,0,0);
-            background-color: rgba(0,0,0,0.4);
-            padding-top: 60px;
-        }
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-        }
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-    </style>
 </head>
 <body>
     <div class="sidebar">
@@ -97,23 +34,27 @@ $tablesResult = $mysqli->query($tablesQuery);
             <a href="#">Home</a>
             <span>admin</span>
         </div>
-
+        <button class="create-btn" id="openAddTableModal">Add Table</button>
+        <button id="deleteTableBtn" class="create-btn">Delete Table</button>
+        <button id="openMenuSelectionModal" class="create-btn">Select Dishes</button>
         <div class="dashboard">
-            <button id="openAddTableModal">Add Table</button>
-            <div class="card-container">
-                <?php if ($tablesResult->num_rows > 0): ?>
-                    <?php while ($table = $tablesResult->fetch_assoc()): ?>
-                        <div class="card" data-id="<?php echo htmlspecialchars($table['table_id']); ?>">
-                            <h3>Table <?php echo htmlspecialchars($table['table_number']); ?></h3>
-                        </div>
-                    <?php endwhile; ?>
-                <?php else: ?>
-                    <p>No tables found.</p>
-                <?php endif; ?>
+            <div class="left-card-container">
+                <div class="card-container">
+                    <?php if ($tablesResult->num_rows > 0): ?>
+                        <?php while ($table = $tablesResult->fetch_assoc()): ?>
+                            <div class="card" data-id="<?php echo htmlspecialchars($table['table_id']); ?>">
+                                <h3>Table <?php echo htmlspecialchars($table['table_number']); ?></h3>
+                            </div>
+                        <?php endwhile; ?>
+                    <?php else: ?>
+                        <p>No tables found.</p>
+                    <?php endif; ?>
+                </div>
             </div>
-
-            <div class="actions">
-                <button id="deleteTableBtn">Delete Table</button>
+            <div class="menu-container" id="menuContainer">
+                <center><h2>Selected dishes</h2></center>
+                <!-- Menu items will be loaded here -->
+                <ul id="selectedDishesList"></ul>
             </div>
         </div>
     </div>
@@ -132,6 +73,30 @@ $tablesResult = $mysqli->query($tablesQuery);
             </form>
         </div>
     </div>
+
+    <!-- Menu Selection Modal -->
+    <div id="menuSelectionModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeMenuSelectionModal">&times;</span>
+            <h2>Select Dishes</h2>
+            <form id="menuSelectionForm">
+                <?php if ($menuResult->num_rows > 0): ?>
+                    <?php while ($dish = $menuResult->fetch_assoc()): ?>
+                        <div class="menu-item">
+                            <label>
+                                <input type="checkbox" name="dishes[]" value="<?php echo htmlspecialchars($dish['dish_id']); ?>">
+                                <?php echo htmlspecialchars($dish['dish_name']); ?>
+                            </label>
+                        </div>
+                    <?php endwhile; ?>
+                <?php else: ?>
+                    <p>No dishes found.</p>
+                <?php endif; ?>
+                <button type="submit">Confirm Selection</button>
+            </form>
+        </div>
+    </div>
+
     <!-- Delete Confirmation Modal -->
     <div id="deleteConfirmationModal" class="modal">
         <div class="modal-content">
@@ -156,19 +121,37 @@ $tablesResult = $mysqli->query($tablesQuery);
             addTableModal.style.display = "none";
         }
 
+        var menuSelectionModal = document.getElementById("menuSelectionModal");
+        var openMenuSelectionBtn = document.getElementById("openMenuSelectionModal");
+        var closeMenuSelectionBtn = document.getElementById("closeMenuSelectionModal");
+
+        openMenuSelectionBtn.onclick = function() {
+            if (selectedTableId) {
+                menuSelectionModal.style.display = "block";
+            } else {
+                alert("Please select a table first.");
+            }
+        }
+
+        closeMenuSelectionBtn.onclick = function() {
+            menuSelectionModal.style.display = "none";
+        }
+
         window.onclick = function(event) {
             if (event.target == addTableModal) {
                 addTableModal.style.display = "none";
             }
+            if (event.target == menuSelectionModal) {
+                menuSelectionModal.style.display = "none";
+            }
+            if (event.target == deleteConfirmationModal) {
+                deleteConfirmationModal.style.display = "none";
+            }
         }
+
         var deleteConfirmationModal = document.getElementById("deleteConfirmationModal");
-        var closeDeleteConfirmationBtn = document.getElementById("closeDeleteConfirmationModal");
         var confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
         var cancelDeleteBtn = document.getElementById("cancelDeleteBtn");
-
-        closeDeleteConfirmationBtn.onclick = function() {
-            deleteConfirmationModal.style.display = "none";
-        }
 
         confirmDeleteBtn.onclick = function() {
             if (selectedTableId) {
@@ -193,12 +176,6 @@ $tablesResult = $mysqli->query($tablesQuery);
             deleteConfirmationModal.style.display = "none";
         }
 
-        window.onclick = function(event) {
-            if (event.target == deleteConfirmationModal) {
-                deleteConfirmationModal.style.display = "none";
-            }
-        }
-
         document.getElementById("addTableForm").onsubmit = function(event) {
             event.preventDefault();
             var formData = new FormData(this);
@@ -217,23 +194,93 @@ $tablesResult = $mysqli->query($tablesQuery);
 
         var selectedTableId = null;
 
-        document.querySelectorAll(".card").forEach(card => {
-            card.onclick = function() {
-                document.querySelectorAll(".card").forEach(c => c.classList.remove('selected'));
-                this.classList.add('selected');
-                selectedTableId = this.getAttribute('data-id');
+document.querySelectorAll(".card").forEach(card => {
+    card.onclick = function() {
+        document.querySelectorAll(".card").forEach(c => c.classList.remove('selected'));
+        this.classList.add('selected');
+        selectedTableId = this.getAttribute('data-id');
 
-                // Show menu items or other details
-                // document.querySelector(".menu-items").classList.add('active');
-            }
-        });
-        document.getElementById("deleteTableBtn").onclick = function() {
-            if (selectedTableId) {
-                deleteConfirmationModal.style.display = "block";
-            } else {
-                alert("Please select a table first.");
-            }
+        // Cập nhật menu-container với các món ăn của bàn hiện tại
+        updateMenuForTable(selectedTableId);
+        
+        // Cập nhật trạng thái bàn
+        updateTableStatus(selectedTableId, 'occupied');
+    }
+});
+
+function updateMenuForTable(tableId) {
+    fetch('get_table_menu.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'id=' + encodeURIComponent(tableId)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            updateMenuContainer(data.dishes);
+        } else {
+            alert('Error loading dishes: ' + data.error);
         }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+document.getElementById("menuSelectionForm").onsubmit = function(event) {
+    event.preventDefault();
+    var formData = new FormData(this);
+    formData.append('table_id', selectedTableId);
+
+    fetch('update_table_menu.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            updateMenuForTable(selectedTableId);
+            document.getElementById("menuSelectionModal").style.display = "none";
+        } else {
+            alert('Error updating dishes: ' + data.error);
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+function updateMenuContainer(dishes) {
+    var selectedDishesList = document.getElementById("selectedDishesList");
+    selectedDishesList.innerHTML = '';
+
+    dishes.forEach(dish => {
+        var li = document.createElement('li');
+        li.textContent = dish.dish_name + ' (Quantity: ' + dish.quantity + ')';
+        selectedDishesList.appendChild(li);
+    });
+}
+
+function updateTableStatus(tableId, status) {
+    fetch('update_table_status.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'id=' + encodeURIComponent(tableId) + '&status=' + encodeURIComponent(status)
+    })
+    .then(response => response.text())
+    .then(data => {
+        console.log('Table status updated:', data);
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+            // Khi nhấn vào phần nền của modal, đóng modal
+    window.onclick = function(event) {
+        if (event.target === document.getElementById("menuSelectionModal")) {
+            document.getElementById("menuSelectionModal").style.display = "none";
+        }
+    }
+    
     </script>
 </body>
 </html>
