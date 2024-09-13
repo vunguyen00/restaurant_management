@@ -55,6 +55,13 @@ $menuResult = $mysqli->query($menuQuery);
                 <center><h2>Selected dishes</h2></center>
                 <!-- Menu items will be loaded here -->
                 <ul id="selectedDishesList"></ul>
+                <!-- Nút thanh toán -->
+                <button id="checkoutBtn" class="create-btn">Checkout</button>
+                <div id="receiptContainer" style="display: none;">
+                    <h3>Receipt</h3>
+                    <ul id="receiptList"></ul>
+                    <p>Total: <span id="totalAmount"></span></p>
+                </div>
             </div>
         </div>
     </div>
@@ -163,17 +170,22 @@ $menuResult = $mysqli->query($menuQuery);
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
                     },
-                    body: 'id=' + encodeURIComponent(selectedTableId)
+                    body: 'table_id=' + encodeURIComponent(selectedTableId) // Sử dụng đúng `table_id`
                 })
-                .then(response => response.text())
+                .then(response => response.json()) // Giả sử `delete_table.php` trả về JSON
                 .then(data => {
-                    alert(data);
-                    deleteConfirmationModal.style.display = "none";
-                    location.reload();
+                    if (data.success) {
+                        alert('Table deleted successfully');
+                        deleteConfirmationModal.style.display = "none";
+                        location.reload(); // Reload lại trang sau khi xóa thành công
+                    } else {
+                        alert('Error deleting table: ' + data.error);
+                    }
                 })
                 .catch(error => console.error('Error:', error));
             }
-        }
+        };
+
 
         cancelDeleteBtn.onclick = function() {
             deleteConfirmationModal.style.display = "none";
@@ -210,6 +222,16 @@ document.querySelectorAll(".card").forEach(card => {
         updateTableStatus(selectedTableId, 'occupied');
     }
 });
+
+// Thêm chức năng khi nhấn vào nút "Delete Table"
+var deleteTableBtn = document.getElementById("deleteTableBtn");
+deleteTableBtn.onclick = function() {
+    if (selectedTableId) {
+        deleteConfirmationModal.style.display = "block"; // Hiển thị modal xác nhận
+    } else {
+        alert("Please select a table first.");
+    }
+};
 
 function updateMenuForTable(tableId) {
     fetch('get_table_menu.php', {
@@ -258,10 +280,51 @@ function updateMenuContainer(dishes) {
 
     dishes.forEach(dish => {
         var li = document.createElement('li');
-        li.textContent = dish.dish_name + ' (Quantity: ' + dish.quantity + ')';
+        li.textContent = dish.dish_name + ' (Quantity: ' + dish.quantity + ', Price: $' + dish.price + ')';
         selectedDishesList.appendChild(li);
     });
 }
+
+// Tính tổng tiền khi nhấn nút Checkout
+var checkoutBtn = document.getElementById("checkoutBtn");
+checkoutBtn.onclick = function() {
+    fetch('get_table_menu.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'id=' + encodeURIComponent(selectedTableId)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            generateReceipt(data.dishes);
+        } else {
+            alert('Error generating receipt: ' + data.error);
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+function generateReceipt(dishes) {
+    var receiptList = document.getElementById("receiptList");
+    var totalAmount = document.getElementById("totalAmount");
+    receiptList.innerHTML = '';
+    let total = 0;
+
+    // Tính tổng tiền dựa trên số lượng và giá của từng món ăn
+    dishes.forEach(dish => {
+        var li = document.createElement('li');
+        var dishTotal = dish.quantity * dish.price;
+        li.textContent = dish.dish_name + ' x' + dish.quantity + ' = $' + dishTotal.toFixed(2);
+        receiptList.appendChild(li);
+        total += dishTotal;
+    });
+
+    totalAmount.textContent = '$' + total.toFixed(2);
+    document.getElementById("receiptContainer").style.display = "block";
+}
+
 
 
 function updateTableStatus(tableId, status) {
