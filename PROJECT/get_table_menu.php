@@ -3,12 +3,12 @@ include("config/config.php");
 
 $tableId = $_POST['id'];
 
+// Truy vấn danh sách món ăn cùng số lượng
 $query = "
-    SELECT d.dish_name, COUNT(o.dish_id) AS quantity 
+    SELECT m.dish_name, o.quantity 
     FROM orders o 
-    JOIN menu d ON o.dish_id = d.dish_id 
-    WHERE o.table_id = ? 
-    GROUP BY d.dish_id
+    JOIN menu m ON o.dish_id = m.dish_id 
+    WHERE o.table_id = ?
 ";
 $stmt = $mysqli->prepare($query);
 $stmt->bind_param("i", $tableId);
@@ -17,7 +17,10 @@ $result = $stmt->get_result();
 
 $dishesList = array();
 while ($row = $result->fetch_assoc()) {
-    $dishesList[] = $row;
+    $dishesList[] = array(
+        'dish_name' => $row['dish_name'],
+        'quantity' => $row['quantity']  // Thêm trường số lượng
+    );
 }
 
 $response = array(

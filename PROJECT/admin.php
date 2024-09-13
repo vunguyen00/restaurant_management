@@ -87,6 +87,8 @@ $menuResult = $mysqli->query($menuQuery);
                                 <input type="checkbox" name="dishes[]" value="<?php echo htmlspecialchars($dish['dish_id']); ?>">
                                 <?php echo htmlspecialchars($dish['dish_name']); ?>
                             </label>
+                            <!-- Thêm input để chọn số lượng -->
+                            <input type="number" name="quantities[<?php echo htmlspecialchars($dish['dish_id']); ?>]" min="1" value="1" style="width: 60px;">
                         </div>
                     <?php endwhile; ?>
                 <?php else: ?>
@@ -96,6 +98,7 @@ $menuResult = $mysqli->query($menuQuery);
             </form>
         </div>
     </div>
+
 
     <!-- Delete Confirmation Modal -->
     <div id="deleteConfirmationModal" class="modal">
@@ -248,6 +251,7 @@ document.getElementById("menuSelectionForm").onsubmit = function(event) {
     .catch(error => console.error('Error:', error));
 }
 
+
 function updateMenuContainer(dishes) {
     var selectedDishesList = document.getElementById("selectedDishesList");
     selectedDishesList.innerHTML = '';
@@ -258,6 +262,7 @@ function updateMenuContainer(dishes) {
         selectedDishesList.appendChild(li);
     });
 }
+
 
 function updateTableStatus(tableId, status) {
     fetch('update_table_status.php', {
