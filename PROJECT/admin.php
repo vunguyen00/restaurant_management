@@ -57,14 +57,19 @@ $menuResult = $mysqli->query($menuQuery);
                 <ul id="selectedDishesList"></ul>
                 <!-- Nút thanh toán -->
                 <button id="checkoutBtn" class="create-btn">Checkout</button>
-                <div id="receiptContainer" style="display: none;">
-                    <h3>Receipt</h3>
-                    <ul id="receiptList"></ul>
-                    <p>Total: <span id="totalAmount"></span></p>
+                <!-- Receipt Modal -->
+                <div id="receiptModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close" id="closeReceiptModal">&times;</span>
+                        <h3>Receipt</h3>
+                        <ul id="receiptList"></ul>
+                        <p>Total: <span id="totalAmount"></span></p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    <script src="deleteX.js"></script>
 
     <!-- Add Table Modal -->
     <div id="addTableModal" class="modal">
@@ -280,10 +285,12 @@ function updateMenuContainer(dishes) {
 
     dishes.forEach(dish => {
         var li = document.createElement('li');
+        li.style.listStyleType = 'none'; // Đảm bảo không có dấu chấm
         li.textContent = dish.dish_name + ' (Quantity: ' + dish.quantity + ', Price: $' + dish.price + ')';
         selectedDishesList.appendChild(li);
     });
 }
+
 
 // Tính tổng tiền khi nhấn nút Checkout
 var checkoutBtn = document.getElementById("checkoutBtn");
@@ -306,6 +313,7 @@ checkoutBtn.onclick = function() {
     .catch(error => console.error('Error:', error));
 }
 
+
 function generateReceipt(dishes) {
     var receiptList = document.getElementById("receiptList");
     var totalAmount = document.getElementById("totalAmount");
@@ -321,9 +329,13 @@ function generateReceipt(dishes) {
         total += dishTotal;
     });
 
+    // Hiển thị tổng số tiền
     totalAmount.textContent = '$' + total.toFixed(2);
-    document.getElementById("receiptContainer").style.display = "block";
+    
+    // Hiển thị khung hóa đơn
+    document.getElementById("receiptModal").style.display = "block";
 }
+
 
 
 
