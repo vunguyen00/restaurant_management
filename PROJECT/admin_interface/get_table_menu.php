@@ -5,7 +5,7 @@ $tableId = $_POST['id'];
 
 // Truy vấn danh sách món ăn cùng số lượng
 $query = "
-    SELECT m.dish_name, o.quantity 
+    SELECT m.dish_name, o.quantity ,m.price
     FROM orders o 
     JOIN menu m ON o.dish_id = m.dish_id 
     WHERE o.table_id = ?
@@ -19,7 +19,8 @@ $dishesList = array();
 while ($row = $result->fetch_assoc()) {
     $dishesList[] = array(
         'dish_name' => $row['dish_name'],
-        'quantity' => $row['quantity']  // Thêm trường số lượng
+        'quantity' => $row['quantity'],  // Thêm trường số lượng
+        'price' => $row['price']
     );
 }
 

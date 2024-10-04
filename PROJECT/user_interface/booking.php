@@ -1,5 +1,20 @@
-<?php 
-include("config/config.php");
+<?php
+include 'config/config.php';
+session_start(); // Bắt đầu session để sử dụng $_SESSION
+
+// Kiểm tra xem người dùng đã đăng nhập hay chưa
+if (isset($_SESSION['user_name'])) {
+    $userName = $_SESSION['user_name'];  // Lấy tên người dùng từ session
+} else {
+    $userName = "USER"; 
+}
+
+// Truy vấn danh sách bàn từ cơ sở dữ liệu
+$sql_tables = "SELECT table_id, table_number FROM restaurant_table WHERE status = 'empty'";
+$result_tables = $mysqli->query($sql_tables);  // Kiểm tra kết nối và thực hiện truy vấn
+if (!$result_tables) {
+    die("Query failed: " . $mysqli->error);  // Hiển thị lỗi nếu truy vấn thất bại
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,7 +39,12 @@ include("config/config.php");
             <a href="#">BOOKING</a>
             <a href="order.php">ORDER</a>
             <a href="cart.php">CART</a>
-            <a href="#">USER</a>
+            <div class="dropdown">
+                <a href="#" class="user-btn"><?php echo htmlspecialchars($userName); ?></a>
+                <div class="dropdown-content">
+                    <a href="logout.php">Log Out</a>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -37,13 +57,20 @@ include("config/config.php");
         <div class="form-container">
             <h1>Reservation</h1>
             <h2>Book A Table Online</h2>
-            <form action="booking.php" method="post">
+            <form action="process_booking.php" method="post">
+                <!-- Hiển thị tên người dùng (readonly) -->
                 <label for="name">Your Name</label>
-                <input type="text" id="name" name="name" required>
+                <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($userName); ?>" readonly>
 
-                <label for="email">Your Email</label>
-                <input type="email" id="email" name="email" required>
+                <!-- Thay trường chọn email thành chọn bàn -->
+                <label for="table">Choose a Table</label>
+                <select id="table" name="table" required>
+                    <?php while ($row = $result_tables->fetch_assoc()): ?>
+                        <option value="<?php echo $row['table_id']; ?>">Table <?php echo $row['table_number']; ?></option>
+                    <?php endwhile; ?>
+                </select>
 
+                <!-- Các trường còn lại -->
                 <label for="date">Date & Time</label>
                 <input type="datetime-local" id="date" name="date" required>
 
@@ -62,6 +89,7 @@ include("config/config.php");
                 <label for="request">Special Request</label>
                 <textarea id="request" name="request" rows="3"></textarea>
 
+                <!-- Nút BOOK NOW -->
                 <button type="submit" class="btn">BOOK NOW</button>
             </form>
         </div>

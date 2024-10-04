@@ -1,14 +1,10 @@
-<?php 
-include ("config/config.php");
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restaurent</title>
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="HomePage.css">
 </head>
 <body>
 
@@ -22,9 +18,9 @@ include ("config/config.php");
             <a href="#">ABOUT</a>
             <a href="#">SERVICE</a>
             <a href="#">CONTACT</a>
-            <a href="booking.php">BOOKING</a>
-            <a href="order.php">ORDER</a>
-            <a href="cart.php">CART</a>
+            <a href="booking.html">BOOKING</a>
+            <a href="order.html">ORDER</a>
+            <a href="cart.html">CART</a>
             <a href="#">USER</a>
         </div>
     </div>
