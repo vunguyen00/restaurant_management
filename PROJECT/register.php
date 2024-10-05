@@ -55,18 +55,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 
 <!-- Form đăng ký -->
-<form method="POST" action="register.php">
-    <label for="username">Tên đăng nhập:</label>
-    <input type="text" id="username" name="username" required><br>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Đăng ký Huyền Ảo</title>
+    <link rel="stylesheet" href="registercss.css">
+</head>
+<body>
+    <form method="POST" action="register.php">
+        <label for="username">Tên đăng nhập:</label>
+        <input type="text" id="username" name="username" placeholder="Nhập tên đăng nhập" required><br>
 
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required><br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" placeholder="Nhập email" required><br>
 
-    <label for="phone">Số điện thoại:</label>
-    <input type="text" id="phone" name="phone"><br>
+        <label for="phone">Số điện thoại:</label>
+        <input type="text" id="phone" name="phone" placeholder="Nhập số điện thoại"><br>
 
-    <label for="password">Mật khẩu:</label>
-    <input type="password" id="password" name="password" required><br>
+        <label for="password">Mật khẩu:</label>
+        <input type="password" id="password" name="password" placeholder="Nhập mật khẩu" required><br>
 
-    <button type="submit">Đăng ký</button>
-</form>
+        <button type="submit">Đăng ký</button>
+    </form>
+</body>
+</html>
