@@ -1,0 +1,99 @@
+/* history.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 80%;
+    margin: 30px auto;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+h1 {
+    text-align: center;
+    color: #4a00e0;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+}
+
+.order {
+    background-color: #fafafa;
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 30px;
+    border-radius: 8px;
+}
+
+.order h3 {
+    color: #2b1055;
+    font-weight: bold;
+}
+
+.order p {
+    margin: 5px 0;
+    font-size: 16px;
+    color: #666;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+table th {
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+table td {
+    background-color: #fff;
+}
+
+table td:nth-child(3) {
+    color: #4a00e0;
+    font-weight: bold;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background-color: #ddd;
+    margin: 20px 0;
+}
+
+p.no-history {
+    text-align: center;
+    font-size: 18px;
+    color: #999;
+}
+
+/* Nút quay trở lại */
+.back-button{
+    background-color: #4a00e0;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+    display: block;
+    width: fit-content;
+}
+.back-button:hover {
+    background-color: #8e2de2;
+}

@@ -132,7 +132,7 @@ foreach ($_SESSION['cart'] as $item) {
         </div>
         <div class="nav-links">
             <a href="index.php">HOME</a>
-            <a href="#">ABOUT</a>
+            <a href="about.php">ABOUT</a>
             <a href="#">SERVICE</a>
             <a href="#">CONTACT</a>
             <a href="booking.php">BOOKING</a>
@@ -140,7 +140,7 @@ foreach ($_SESSION['cart'] as $item) {
             <div class="dropdown">
                 <a href="#" class="user-btn"><?php echo htmlspecialchars($userName); ?></a>
                 <div class="dropdown-content">
-                    <a href="logout.php">Log Out</a>
+                    <a href="../login.php">Log Out</a>
                 </div>
             </div>
         </div>

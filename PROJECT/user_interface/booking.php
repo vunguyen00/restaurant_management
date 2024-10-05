@@ -38,7 +38,6 @@ if (!$result_tables) {
             <a href="#">CONTACT</a>
             <a href="#">BOOKING</a>
             <a href="order.php">ORDER</a>
-            <a href="cart.php">CART</a>
             <div class="dropdown">
                 <a href="#" class="user-btn"><?php echo htmlspecialchars($userName); ?></a>
                 <div class="dropdown-content">

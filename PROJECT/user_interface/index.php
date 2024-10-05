@@ -26,12 +26,11 @@ if (isset($_SESSION['user_name'])) {
         </div>
         <div class="nav-links">
             <a href="#">HOME</a>
-            <a href="#">ABOUT</a>
+            <a href="about.php">ABOUT</a>
             <a href="#">SERVICE</a>
             <a href="#">CONTACT</a>
             <a href="booking.php">BOOKING</a>
             <a href="order.php">ORDER</a>
-            <a href="cart.php">CART</a>
             <div class="dropdown">
                 <a href="#" class="user-btn"><?php echo htmlspecialchars($userName); ?></a>
                 <div class="dropdown-content">

@@ -46,11 +46,18 @@ while ($row = $result->fetch_assoc()) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order History</title>
-    <link rel="stylesheet" href="history.css">
+    <link rel="stylesheet" href="historycss.css">
 </head>
 <body>
 
 <div class="container">
+    <button class="back-button" onclick="goBack()">← Back to Menu</button>
+    <script>
+        function goBack(){
+            window.history.back();
+        }
+    </script>
+
     <h1>Your Order History</h1>
 
     <?php if (!empty($orderHistory)): ?>
