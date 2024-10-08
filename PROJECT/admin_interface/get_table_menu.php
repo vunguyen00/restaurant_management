@@ -1,42 +1,57 @@
 <?php
 include("config/config.php");
 
-$tableId = $_POST['id'];
+// Kiểm tra xem yêu cầu có phải là POST và có ID đơn hàng không
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id'])) {
+    $orderId = $_POST['id']; // Giả sử id ở đây là order_id
 
-// Truy vấn danh sách món ăn cùng số lượng và giá
-$query = "
-<<<<<<< HEAD:PROJECT/admin_interface/get_table_menu.php
-    SELECT m.dish_name, o.quantity ,m.price
-=======
-    SELECT m.dish_name, o.quantity, m.price 
->>>>>>> 680ee18670dfceab7f0b659d8f149eee34a7d582:PROJECT/get_table_menu.php
-    FROM orders o 
-    JOIN menu m ON o.dish_id = m.dish_id 
-    WHERE o.table_id = ?
-";
-$stmt = $mysqli->prepare($query);
-$stmt->bind_param("i", $tableId);
-$stmt->execute();
-$result = $stmt->get_result();
+    // Truy vấn danh sách món ăn và số lượng từ bảng orders_items
+    $query = "
+        SELECT m.dish_name, oi.quantity, m.price
+        FROM order_items oi
+        JOIN menu m ON oi.dish_name = m.dish_name 
+        JOIN orders o ON oi.order_id = o.order_id
+        WHERE o.order_id = ?
+    ";
 
-$dishesList = array();
-while ($row = $result->fetch_assoc()) {
-    $dishesList[] = array(
-        'dish_name' => $row['dish_name'],
-        'quantity' => $row['quantity'],  // Thêm trường số lượng
-<<<<<<< HEAD:PROJECT/admin_interface/get_table_menu.php
-        'price' => $row['price']
-=======
-        'price' => $row['price']  // Thêm trường giá
->>>>>>> 680ee18670dfceab7f0b659d8f149eee34a7d582:PROJECT/get_table_menu.php
+    if ($stmt = $mysqli->prepare($query)) {
+        $stmt->bind_param("i", $orderId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $dishesList = array();
+        while ($row = $result->fetch_assoc()) {
+            $dishesList[] = array(
+                'dish_name' => $row['dish_name'],
+                'quantity' => $row['quantity'], // Thêm trường số lượng
+                'price' => $row['price']
+            );
+        }
+
+        // Tạo phản hồi JSON thành công
+        $response = array(
+            'success' => true,
+            'dishes' => $dishesList
+        );
+    } else {
+        // Tạo phản hồi lỗi nếu không thể chuẩn bị câu truy vấn
+        $response = array(
+            'success' => false,
+            'error' => 'Error preparing statement: ' . $mysqli->error
+        );
+    }
+} else {
+    // Tạo phản hồi lỗi nếu yêu cầu không hợp lệ
+    $response = array(
+        'success' => false,
+        'error' => 'Invalid request or missing order ID'
     );
 }
 
-$response = array(
-    'success' => true,
-    'dishes' => $dishesList
-);
-
+// Thiết lập tiêu đề nội dung là JSON
 header('Content-Type: application/json');
 echo json_encode($response);
+
+// Đóng kết nối
+$mysqli->close();
 ?>

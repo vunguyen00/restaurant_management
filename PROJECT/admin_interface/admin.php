@@ -280,13 +280,12 @@ document.getElementById("menuSelectionForm").onsubmit = function(event) {
 
 function updateMenuContainer(dishes) {
     var selectedDishesList = document.getElementById("selectedDishesList");
-    selectedDishesList.innerHTML = '';
+    selectedDishesList.innerHTML = '';  // Xóa nội dung hiện tại trước khi cập nhật
 
     dishes.forEach(dish => {
         var li = document.createElement('li');
-        li.style.listStyleType = 'none'; // Đảm bảo không có dấu chấm
         li.textContent = dish.dish_name + ' (Quantity: ' + dish.quantity + ', Price: $' + dish.price + ')';
-        selectedDishesList.appendChild(li);
+        selectedDishesList.appendChild(li);  // Thêm món ăn vào danh sách
     });
 }
 
