@@ -6,12 +6,15 @@ $results = array();
 // Thực thi câu lệnh đầu tiên
 $query1 = "
     SELECT m.dish_id, m.dish_name, m.price, m.dish_describe, 
-           GROUP_CONCAT(i.ingredient_name SEPARATOR ', ') AS ingredients
+           GROUP_CONCAT(i.ingredient_name SEPARATOR ', ') AS ingredients,
+           MIN(i.quantity) AS min_quantity
     FROM menu m
     LEFT JOIN dish_ingredients di ON m.dish_id = di.dish_id
     LEFT JOIN ingredients i ON di.ingredient_id = i.ingredient_id
     GROUP BY m.dish_id
+    HAVING min_quantity > 0
 ";
+
 $results['menu'] = $mysqli->query($query1);
 
 // Thực thi câu lệnh thứ hai
@@ -32,6 +35,7 @@ $ingredientsResult = $results['ingredients'];
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 </head>
+<script src="reloadfood.js"></script>
 <body>
     <div class="sidebar">
         <h2>LOGO</h2>
