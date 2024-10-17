@@ -4,18 +4,20 @@ include 'config/config.php';
 
 // Kiểm tra xem người dùng đã đăng nhập chưa
 if (!isset($_SESSION['user_name']) || !isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location: ../login.php");
     exit();
 }
 
 $searchResult = []; // Biến lưu trữ kết quả tìm kiếm
 $orderId = ''; // Biến để lưu orderId tìm kiếm
 
-// Truy vấn để lấy tất cả đơn hàng đã thanh toán
+// Truy vấn để lấy tất cả đơn hàng đã thanh toán, bao gồm số bàn từ restaurant_table
 $sql = "SELECT o.order_id, o.total_price, o.order_date, u.user_name AS customer_name, 
-               u.email AS customer_email, u.phone_number AS customer_phone
+               u.email AS customer_email, u.phone_number AS customer_phone,
+               rt.table_number
         FROM orders o
         LEFT JOIN user u ON o.user_id = u.user_id
+        LEFT JOIN restaurant_table rt ON o.table_id = rt.table_id
         ORDER BY o.order_date DESC";
 
 $stmt = $mysqli->prepare($sql);
@@ -33,6 +35,7 @@ while ($row = $result->fetch_assoc()) {
         'customer_name' => $row['customer_name'],
         'customer_email' => $row['customer_email'],
         'customer_phone' => $row['customer_phone'],
+        'table_number' => $row['table_number'] // Thêm số bàn
     ];
 }
 
@@ -40,13 +43,15 @@ while ($row = $result->fetch_assoc()) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['order_id'])) {
     $orderId = $_POST['order_id'];
 
-    // Truy vấn để lấy thông tin đơn hàng đã thanh toán dựa trên orderId
+    // Truy vấn để lấy thông tin đơn hàng đã thanh toán dựa trên orderId, bao gồm số bàn
     $sql = "SELECT o.order_id, o.total_price, o.order_date, u.user_name AS customer_name, 
                    u.email AS customer_email, u.phone_number AS customer_phone,
-                   oi.dish_name, oi.quantity, oi.price 
+                   oi.dish_name, oi.quantity, oi.price,
+                   rt.table_number
             FROM orders o
             LEFT JOIN user u ON o.user_id = u.user_id
             LEFT JOIN order_items oi ON o.order_id = oi.order_id
+            LEFT JOIN restaurant_table rt ON o.table_id = rt.table_id
             WHERE o.order_id = ? ";
     $stmt = $mysqli->prepare($sql);
     
@@ -70,6 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['order_id'])) {
             $searchResult['customer_name'] = $row['customer_name'];
             $searchResult['customer_email'] = $row['customer_email'];
             $searchResult['customer_phone'] = $row['customer_phone'];
+            $searchResult['table_number'] = $row['table_number']; // Thêm số bàn
             $searchResult['items'][] = [
                 'dish_name' => $row['dish_name'],
                 'quantity' => $row['quantity'],
@@ -119,6 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['order_id'])) {
                 <p>Customer Name: <?php echo htmlspecialchars($searchResult['customer_name']); ?></p>
                 <p>Email: <?php echo htmlspecialchars($searchResult['customer_email']); ?></p>
                 <p>Phone: <?php echo htmlspecialchars($searchResult['customer_phone']); ?></p>
+                <p>Table Number: <?php echo htmlspecialchars($searchResult['table_number']); ?></p> <!-- Hiển thị số bàn -->
                 <p>Order Date: <?php echo htmlspecialchars($searchResult['order_date']); ?></p>
                 <p>Total Price: $<?php echo number_format($searchResult['total_price'], 2); ?></p>
 
@@ -150,6 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['order_id'])) {
                                 <th>Customer Name</th>
                                 <th>Email</th>
                                 <th>Phone Number</th>
+                                <th>Table Number</th> <!-- Thêm cột số bàn -->
                                 <th>Order Date</th>
                                 <th>Total Price</th>
                             </tr>
@@ -161,6 +169,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['order_id'])) {
                                 <td><?php echo htmlspecialchars($order['customer_name']); ?></td>
                                 <td><?php echo htmlspecialchars($order['customer_email']); ?></td>
                                 <td><?php echo htmlspecialchars($order['customer_phone']); ?></td>
+                                <td><?php echo htmlspecialchars($order['table_number']); ?></td> <!-- Hiển thị số bàn -->
                                 <td><?php echo htmlspecialchars($order['order_date']); ?></td>
                                 <td>$<?php echo number_format($order['total_price'], 2); ?></td>
                             </tr>
