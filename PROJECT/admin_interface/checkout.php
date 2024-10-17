@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['table_id'])) {
             $quantity = $row['quantity'];
 
             // Get the ingredients for each dish
-            $ingredientQuery = "SELECT ingredient_id, quantity_required FROM dish_ingredients WHERE dish_id = ?";
+            $ingredientQuery = "SELECT ingredient_id FROM dish_ingredients WHERE dish_id = ?";
             $ingredientStmt = $mysqli->prepare($ingredientQuery);
             $ingredientStmt->bind_param("i", $dish_id);
             $ingredientStmt->execute();
@@ -36,29 +36,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['table_id'])) {
 
             while ($ingredient = $ingredientResult->fetch_assoc()) {
                 $ingredient_id = $ingredient['ingredient_id'];
-                $quantity_required = $ingredient['quantity_required'] * $quantity; // Adjust based on ordered quantity
 
                 // Log the required quantities
-                error_log("Updating ingredient_id: $ingredient_id, reducing by: $quantity_required");
+                error_log("Updating ingredient_id: $ingredient_id, reducing by: $quantity");
 
-                // Check if quantity_required is not null
-                if ($quantity_required !== null && $quantity_required > 0) {
-                    // Reduce the quantity of each ingredient in the database
-                    $updateQuery = "UPDATE ingredients SET quantity = quantity - ? WHERE ingredient_id = ? AND quantity >= ?";
-                    $updateStmt = $mysqli->prepare($updateQuery);
-                    $updateStmt->bind_param("iii", $quantity_required, $ingredient_id, $quantity_required);
-                    
-                    if (!$updateStmt->execute()) {
-                        throw new Exception("Error executing update statement: " . $updateStmt->error);
-                    }
+                // Reduce the quantity of each ingredient in the database
+                $updateQuery = "UPDATE ingredients SET quantity = quantity - ? WHERE ingredient_id = ? AND quantity >= ?";
+                $updateStmt = $mysqli->prepare($updateQuery);
+                $updateStmt->bind_param("iii", $quantity, $ingredient_id, $quantity);
+                
+                if (!$updateStmt->execute()) {
+                    throw new Exception("Error executing update statement: " . $updateStmt->error);
+                }
 
-                    // Check if the update was successful
-                    if ($updateStmt->affected_rows === 0) {
-                        // If not enough stock, throw an exception to roll back the transaction
-                        throw new Exception("Not enough stock for ingredient ID: $ingredient_id");
-                    }
-                } else {
-                    error_log("Skipped updating ingredient_id: $ingredient_id because quantity_required is zero or negative");
+                // Check if the update was successful
+                if ($updateStmt->affected_rows === 0) {
+                    // If not enough stock, throw an exception to roll back the transaction
+                    throw new Exception("Not enough stock for ingredient ID: $ingredient_id");
                 }
             }
         }
