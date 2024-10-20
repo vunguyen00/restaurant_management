@@ -1,8 +1,13 @@
 <?php 
-include 'config/config.php';
-
+include ("config/config.php");
+session_start();
+if (isset($_SESSION['user_name'])) {
+    $userName = $_SESSION['user_name'];  // Lấy tên người dùng từ session
+} else {
+    $userName = "USER"; 
+}
 // Lấy danh sách bàn từ cơ sở dữ liệu
-$tablesQuery = "SELECT table_id, table_number FROM restaurant_table";
+$tablesQuery = "SELECT table_id, table_number,status FROM restaurant_table";
 $tablesResult = $mysqli->query($tablesQuery);
 
 // Lấy danh sách món ăn từ cơ sở dữ liệu
@@ -33,25 +38,34 @@ $menuResult = $mysqli->query($menuQuery);
     <div class="main-content">
         <div class="navbar">
             <a href="#">Home</a>
-            <span>admin</span>
+            <div class="dropdown">
+                <a href="#" class="user-btn"><?php echo htmlspecialchars($userName); ?></a>
+                <div class="dropdown-content">
+                    <a href="logout.php">Log Out</a>
+                </div>
+            </div>
         </div>
         <button class="create-btn" id="openAddTableModal">Add Table</button>
         <button id="deleteTableBtn" class="create-btn">Delete Table</button>
         <button id="openMenuSelectionModal" class="create-btn">Select Dishes</button>
         <div class="dashboard">
-            <div class="left-card-container">
-                <div class="card-container">
-                    <?php if ($tablesResult->num_rows > 0): ?>
-                        <?php while ($table = $tablesResult->fetch_assoc()): ?>
-                            <div class="card" data-id="<?php echo htmlspecialchars($table['table_id']); ?>">
-                                <h3>Table <?php echo htmlspecialchars($table['table_number']); ?></h3>
-                            </div>
-                        <?php endwhile; ?>
-                    <?php else: ?>
-                        <p>No tables found.</p>
-                    <?php endif; ?>
-                </div>
+        <div class="left-card-container">
+            <div class="card-container">
+                <?php if ($tablesResult->num_rows > 0): ?>
+                    <?php while ($table = $tablesResult->fetch_assoc()): ?>
+                        <div class="card <?php echo ($table['status'] == 'occupied') ? 'occupied' : ''; ?>"
+                            <?php if (!empty($table['table_id'])): ?>
+                                data-id="<?php echo htmlspecialchars($table['table_id']); ?>"
+                            <?php endif; ?>>
+                            <h3>Table <?php echo htmlspecialchars($table['table_number']); ?></h3>
+                        </div>
+                    <?php endwhile; ?>
+                <?php else: ?>
+                    <p>No tables found.</p>
+                <?php endif; ?>
             </div>
+        </div>
+
             <div class="menu-container" id="menuContainer">
                 <center><h2>Selected dishes</h2></center>
                 <!-- Menu items will be loaded here -->
@@ -275,6 +289,7 @@ document.getElementById("menuSelectionForm").onsubmit = function(event) {
             // Cập nhật danh sách món ăn ngay sau khi thêm món
             updateMenuForTable(selectedTableId);
             document.getElementById("menuSelectionModal").style.display = "none";
+            location.reload();
         } else {
             alert('Error updating dishes: ' + data.error);
         }
@@ -332,6 +347,7 @@ checkoutBtn.onclick = function() {
                         'Content-Type': 'application/x-www-form-urlencoded',
                     },
                     body: 'table_id=' + encodeURIComponent(selectedTableId)
+                    
                 });
             } else {
                 throw new Error('Error generating receipt: ' + data.error);
@@ -343,6 +359,7 @@ checkoutBtn.onclick = function() {
                 updateMenuForTable(selectedTableId);
                 receiptModal.style.display = "none";
                 alert('Checkout successful!');
+                location.reload();
             } else {
                 throw new Error('Error during checkout: ' + data.error);
             }
@@ -375,7 +392,24 @@ function generateReceipt(dishes) {
     // Hiển thị khung hóa đơn
     receiptModal.style.display = "block";
 }
+document.addEventListener('DOMContentLoaded', function () {
+        var userBtn = document.querySelector('.user-btn');
+        var dropdownContent = document.querySelector('.dropdown-content');
 
+        userBtn.addEventListener('click', function (e) {
+            e.preventDefault();  // Ngăn chặn việc điều hướng khi nhấp vào liên kết
+
+            // Toggle (chuyển đổi) giữa hiển thị và ẩn dropdown-content
+            dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
+        });
+
+        // Đóng dropdown nếu nhấp ra ngoài vùng dropdown
+        window.addEventListener('click', function (e) {
+            if (!userBtn.contains(e.target) && !dropdownContent.contains(e.target)) {
+                dropdownContent.style.display = 'none';
+            }
+        });
+    });
 // Hàm để xóa các món ăn và đặt bàn về trạng thái trống
 function clearTable(tableId) {
     fetch('clear_table.php', {

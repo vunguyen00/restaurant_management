@@ -11,7 +11,6 @@ header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['table_id'])) {
     $table_id = $_POST['table_id'];
-    $user_id = $_SESSION['user_id']; // Assuming user ID is stored in session
     $total_price = 0; // Initialize total price
 
     // Begin transaction
@@ -66,35 +65,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['table_id'])) {
                 'quantity' => $quantity,
                 'price' => $price,
             ];
-
-            // Get the ingredients for each dish
-            $ingredientQuery = "SELECT ingredient_id FROM dish_ingredients WHERE dish_id = ?";
-            $ingredientStmt = $mysqli->prepare($ingredientQuery);
-            $ingredientStmt->bind_param("i", $dish_id);
-            $ingredientStmt->execute();
-            $ingredientResult = $ingredientStmt->get_result();
-
-            while ($ingredient = $ingredientResult->fetch_assoc()) {
-                $ingredient_id = $ingredient['ingredient_id'];
-
-                // Log the required quantities
-                error_log("Updating ingredient_id: $ingredient_id, reducing by: $quantity");
-
-                // Reduce the quantity of each ingredient in the database
-                $updateQuery = "UPDATE ingredients SET quantity = quantity - ? WHERE ingredient_id = ? AND quantity >= ?";
-                $updateStmt = $mysqli->prepare($updateQuery);
-                $updateStmt->bind_param("iii", $quantity, $ingredient_id, $quantity);
-                
-                if (!$updateStmt->execute()) {
-                    throw new Exception("Error executing update statement: " . $updateStmt->error);
-                }
-
-                // Check if the update was successful
-                if ($updateStmt->affected_rows === 0) {
-                    // If not enough stock, throw an exception to roll back the transaction
-                    throw new Exception("Not enough stock for ingredient ID: $ingredient_id");
-                }
-            }
         }
 
         // Create a new order in the orders table

@@ -39,6 +39,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['table_id']) && isset($
         }
     }
 
+    // Cập nhật trạng thái bàn là 'occupied'
+    $updateTableStatusQuery = "UPDATE restaurant_table SET status = 'occupied' WHERE table_id = ?";
+    if ($statusStmt = $mysqli->prepare($updateTableStatusQuery)) {
+        $statusStmt->bind_param("i", $table_id);
+        $statusStmt->execute();
+        $statusStmt->close();
+    }
+
     // Trả về phản hồi JSON thành công
     echo json_encode(['success' => true]);
 } else {
