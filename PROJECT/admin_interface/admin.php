@@ -310,14 +310,27 @@ document.getElementById("menuSelectionForm").onsubmit = function(event) {
 
 function updateMenuContainer(dishes) {
     var selectedDishesList = document.getElementById("selectedDishesList");
-    selectedDishesList.innerHTML = '';  // Xóa nội dung hiện tại trước khi cập nhật
+    selectedDishesList.innerHTML = ''; // Xóa nội dung hiện tại
 
     dishes.forEach(dish => {
         var li = document.createElement('li');
         li.textContent = dish.dish_name + ' (Quantity: ' + dish.quantity + ', Price: $' + dish.price + ')';
-        selectedDishesList.appendChild(li);  // Thêm món ăn vào danh sách
+
+        // Thêm nút xóa món
+        var removeButton = document.createElement('button');
+        removeButton.textContent = 'Remove';
+        removeButton.classList.add('remove-btn');
+        removeButton.onclick = function() {
+            removeDishFromOrder(dish.dish_id, dish.quantity);
+        };
+
+        // Thêm nút xóa vào list item
+        li.appendChild(removeButton);
+        selectedDishesList.appendChild(li); // Thêm món vào danh sách
     });
 }
+
+
 
 
 
@@ -424,25 +437,26 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     });
-    function removeDishFromOrder(dishId) {
-    fetch('remove_dish.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: 'table_id=' + encodeURIComponent(selectedTableId) + '&dish_id=' + encodeURIComponent(dishId)
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert('Dish removed successfully');
-            updateMenuForTable(selectedTableId);
-        } else {
-            alert('Error removing dish: ' + data.error);
-        }
-    })
-    .catch(error => console.error('Error:', error));
-}
+    function removeDishFromOrder(dishId, quantity) {
+        fetch('remove_dish.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'table_id=' + encodeURIComponent(selectedTableId) + '&dish_id=' + encodeURIComponent(dishId) + '&quantity=' + encodeURIComponent(quantity)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Dish removed successfully');
+                updateMenuForTable(selectedTableId); // Làm mới danh sách món ăn sau khi xóa
+            } else {
+                alert('Error removing dish: ' + data.error);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
     function clearTable(tableId) {
         fetch('clear_table.php', {
             method: 'POST',
