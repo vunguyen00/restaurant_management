@@ -32,6 +32,7 @@ $menuResult = $mysqli->query($menuQuery);
             <li><a href="orders.php">Orders</a></li>
             <li><a href="foods.php">Foods</a></li>
             <li><a href="books.php">Bookings</a></li>
+            <li><a href="statistics.php" class="button">Revenue & Dish Statistics</a></li>
         </ul>
     </div>
 
@@ -80,6 +81,16 @@ $menuResult = $mysqli->query($menuQuery);
                         <h3>Receipt</h3>
                         <ul id="receiptList"></ul>
                         <p>Total: <span id="totalAmount"></span></p>
+                        
+                        <!-- Thêm thông tin khách hàng -->
+                        <h4>Customer Information</h4>
+                        <label for="customer_name">Name:</label>
+                        <input type="text" id="customer_name" placeholder="Enter customer name" required>
+                        
+                        <label for="customer_phone">Phone:</label>
+                        <input type="text" id="customer_phone" placeholder="Enter customer phone" required>
+                        
+                        <button id="confirmCheckoutBtn">Confirm Checkout</button>
                     </div>
                 </div>
 
@@ -87,8 +98,6 @@ $menuResult = $mysqli->query($menuQuery);
         </div>
     </div>
     <script src="deleteX.js"></script>
-
-    <!-- Add Table Modal -->
     <div id="addTableModal" class="modal">
         <div class="modal-content">
             <span class="close" id="closeAddTableModal">&times;</span>
@@ -207,7 +216,7 @@ $menuResult = $mysqli->query($menuQuery);
             }
         };
 
-
+        
         cancelDeleteBtn.onclick = function() {
             deleteConfirmationModal.style.display = "none";
         }
@@ -324,6 +333,7 @@ closeReceiptModalBtn.onclick = function() {
 
 // Tính tổng tiền khi nhấn nút Checkout
 var checkoutBtn = document.getElementById("checkoutBtn");
+// Tính tổng tiền khi nhấn nút Checkout
 checkoutBtn.onclick = function() {
     if (selectedTableId) {
         // First, get the table menu
@@ -340,44 +350,56 @@ checkoutBtn.onclick = function() {
                 // Generate the receipt
                 generateReceipt(data.dishes);
 
-                // Proceed with checkout to update ingredient quantities and clear table orders
-                return fetch('checkout.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: 'table_id=' + encodeURIComponent(selectedTableId)
-                    
-                });
+                // Hiển thị modal xác nhận checkout
+                receiptModal.style.display = "block";  // Hiển thị modal để xác nhận thanh toán
             } else {
                 throw new Error('Error generating receipt: ' + data.error);
             }
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                updateMenuForTable(selectedTableId);
-                receiptModal.style.display = "none";
-                alert('Checkout successful!');
-                location.reload();
-            } else {
-                throw new Error('Error during checkout: ' + data.error);
-            }
-        })
         .catch(error => alert(error.message));
-    } else {
-        alert('Please select a table first.');
-    }
 };
 
-// Hàm để tạo hóa đơn và tính tổng tiền
+    document.getElementById("confirmCheckoutBtn").onclick = function() {
+        const customerName = document.getElementById("customer_name").value;
+        const customerPhone = document.getElementById("customer_phone").value;
+
+        // Kiểm tra thông tin khách hàng
+        if (!customerName || !customerPhone) {
+            alert("Vui lòng điền thông tin khách hàng.");
+            return;
+        }
+
+        // Tiến hành thanh toán
+        fetch('checkout.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'table_id=' + encodeURIComponent(selectedTableId) +
+                '&customer_name=' + encodeURIComponent(customerName) +
+                '&customer_phone=' + encodeURIComponent(customerPhone)
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.text(); // Nhận HTML
+            } else {
+                throw new Error('Lỗi trong quá trình thanh toán');
+            }
+        })
+        .then(html => {
+            // Hiển thị hóa đơn
+            document.body.innerHTML = html; // Thay đổi nội dung body thành hóa đơn
+        })
+        .catch(error => alert(error.message));
+    };
+
+}
+
 function generateReceipt(dishes) {
     var receiptList = document.getElementById("receiptList");
     var totalAmount = document.getElementById("totalAmount");
     receiptList.innerHTML = '';
     let total = 0;
-
-    // Tính tổng tiền dựa trên số lượng và giá của từng món ăn
     dishes.forEach(dish => {
         var li = document.createElement('li');
         var dishTotal = dish.quantity * dish.price;
@@ -385,11 +407,7 @@ function generateReceipt(dishes) {
         receiptList.appendChild(li);
         total += dishTotal;
     });
-
-    // Hiển thị tổng số tiền
     totalAmount.textContent = '$' + total.toFixed(2);
-
-    // Hiển thị khung hóa đơn
     receiptModal.style.display = "block";
 }
 document.addEventListener('DOMContentLoaded', function () {
@@ -397,61 +415,70 @@ document.addEventListener('DOMContentLoaded', function () {
         var dropdownContent = document.querySelector('.dropdown-content');
 
         userBtn.addEventListener('click', function (e) {
-            e.preventDefault();  // Ngăn chặn việc điều hướng khi nhấp vào liên kết
-
-            // Toggle (chuyển đổi) giữa hiển thị và ẩn dropdown-content
+            e.preventDefault();
             dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
         });
-
-        // Đóng dropdown nếu nhấp ra ngoài vùng dropdown
         window.addEventListener('click', function (e) {
             if (!userBtn.contains(e.target) && !dropdownContent.contains(e.target)) {
                 dropdownContent.style.display = 'none';
             }
         });
     });
-// Hàm để xóa các món ăn và đặt bàn về trạng thái trống
-function clearTable(tableId) {
-    fetch('clear_table.php', {
+    function removeDishFromOrder(dishId) {
+    fetch('remove_dish.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: 'table_id=' + encodeURIComponent(tableId)
+        body: 'table_id=' + encodeURIComponent(selectedTableId) + '&dish_id=' + encodeURIComponent(dishId)
     })
-    .then(response => response.text())
+    .then(response => response.json())
     .then(data => {
-        console.log('Table cleared:', data);
-        updateTableStatus(tableId, 'empty'); // Đặt lại trạng thái bàn là "empty"
-        updateMenuForTable(tableId); // Cập nhật lại danh sách món ăn (rỗng)
+        if (data.success) {
+            alert('Dish removed successfully');
+            updateMenuForTable(selectedTableId);
+        } else {
+            alert('Error removing dish: ' + data.error);
+        }
     })
     .catch(error => console.error('Error:', error));
 }
-
-// Hàm để cập nhật trạng thái của bàn
-function updateTableStatus(tableId, status) {
-    fetch('update_table_status.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: 'table_id=' + encodeURIComponent(tableId) + '&status=' + encodeURIComponent(status)
-    })
-    .then(response => response.text())
-    .then(data => {
-        console.log('Table status updated:', data);
-    })
-    .catch(error => console.error('Error:', error));
-}
-
-// Khi nhấn vào phần nền của modal, đóng modal
-window.onclick = function(event) {
-    if (event.target === receiptModal) {
-        receiptModal.style.display = "none";
+    function clearTable(tableId) {
+        fetch('clear_table.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'table_id=' + encodeURIComponent(tableId)
+        })
+        .then(response => response.text())
+        .then(data => {
+            console.log('Table cleared:', data);
+            updateTableStatus(tableId, 'empty');
+            updateMenuForTable(tableId); 
+        })
+        .catch(error => console.error('Error:', error));
     }
-};
 
-    
+    function updateTableStatus(tableId, status) {
+        fetch('update_table_status.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'table_id=' + encodeURIComponent(tableId) + '&status=' + encodeURIComponent(status)
+        })
+        .then(response => response.text())
+        .then(data => {
+            console.log('Table status updated:', data);
+        })
+        .catch(error => console.error('Error:', error));
+    }
+    window.onclick = function(event) {
+        if (event.target === receiptModal) {
+            receiptModal.style.display = "none";
+        }
+    };
     </script>
 </body>
 </html>
