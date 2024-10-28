@@ -12,6 +12,11 @@ if (!isset($_SESSION['user_name']) || !isset($_SESSION['user_id'])) {
     exit();
 }
 
+// Lấy thông tin người dùng
+$userName = $_SESSION['user_name'];
+$datePaid = date('Y-m-d'); // Ngày thanh toán
+$timePaid = date('H:i:s'); // Giờ thanh toán
+
 // Fetch total revenue
 $sql = "SELECT SUM(total_price) AS total_revenue FROM orders";
 $result = $mysqli->query($sql);
@@ -36,7 +41,7 @@ if ($result) {
 
 // Handle Excel export
 if (isset($_POST['export_excel'])) {
-    require 'vendor/autoload.php'; // Include PHPExcel or PhpSpreadsheet autoloader
+    require '../vendor/autoload.php'; // Include PHPExcel or PhpSpreadsheet autoloader
 
     $spreadsheet = new Spreadsheet();
     $sheet = $spreadsheet->getActiveSheet();
@@ -102,11 +107,17 @@ if (isset($_POST['export_excel'])) {
             <!-- Total Revenue -->
             <p><strong>Total Revenue: </strong>$<?php echo number_format($totalRevenue, 2); ?></p>
 
+            <!-- User Payment Info -->
+            <p><strong>Payer Name: </strong><?php echo htmlspecialchars($userName); ?></p>
+            <p><strong>Date of Payment: </strong><?php echo $datePaid; ?></p>
+            <p><strong>Time of Payment: </strong><?php echo $timePaid; ?></p>
+
             <!-- Dish Statistics -->
             <h3>Dish Sales and Revenue</h3>
             <table>
                 <thead>
                     <tr>
+                        <th>Manage</th>
                         <th>Dish Name</th>
                         <th>Total Quantity Sold</th>
                         <th>Total Revenue</th>
@@ -115,6 +126,7 @@ if (isset($_POST['export_excel'])) {
                 <tbody>
                     <?php foreach ($dishStats as $dish): ?>
                         <tr>
+                            <td></td>
                             <td><?php echo htmlspecialchars($dish['dish_name']); ?></td>
                             <td><?php echo htmlspecialchars($dish['total_quantity']); ?></td>
                             <td>$<?php echo number_format($dish['total_revenue'], 2); ?></td>

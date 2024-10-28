@@ -131,7 +131,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['order_id'])) {
                 <h3>Order ID: <?php echo htmlspecialchars($searchResult['order_id']); ?></h3>
                 <p>Customer Name: <?php echo htmlspecialchars($searchResult['customer_name']); ?></p>
                 <p>Phone: <?php echo htmlspecialchars($searchResult['customer_phone']); ?></p>
-                <p>Admin User Name: <?php echo htmlspecialchars($searchResult['admin_user_name']); ?></p> <!-- Hiển thị tên admin -->
+                <p>Ca: <?php echo htmlspecialchars($searchResult['admin_user_name']); ?></p> <!-- Hiển thị tên admin -->
                 <p>Table Number: <?php echo htmlspecialchars($searchResult['table_number']); ?></p> <!-- Hiển thị số bàn -->
                 <p>Order Date: <?php echo htmlspecialchars($searchResult['order_date']); ?></p>
                 <p>Payment Time: <?php echo htmlspecialchars($searchResult['payment_time']); ?></p> <!-- Thêm thời gian thanh toán -->

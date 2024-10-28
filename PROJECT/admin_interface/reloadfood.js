@@ -2,7 +2,7 @@
 function placeOrder(dishId, quantityOrdered) {
     $.ajax({
         type: "POST",
-        url: "place_order.php",
+        url: "admin.php",
         data: {
             dish_id: dishId,
             quantity: quantityOrdered

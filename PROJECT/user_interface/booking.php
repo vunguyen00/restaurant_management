@@ -23,6 +23,28 @@ if (!$result_tables) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restoran - Book A Table</title>
     <link rel="stylesheet" href="booking.css">
+    <script>
+        function validateBooking() {
+            const dateInput = document.getElementById('date').value;
+            const now = new Date();
+            const bookingTime = new Date(dateInput);
+
+            // Kiểm tra nếu thời gian đặt bàn ít nhất 1 giờ sau thời gian hiện tại
+            const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
+            if (bookingTime < oneHourLater) {
+                alert('Bạn cần đặt bàn ít nhất 1 giờ sau thời gian hiện tại.');
+                return false; // Ngăn không cho gửi biểu mẫu
+            }
+
+            // Kiểm tra nếu thời gian đặt bàn sau 5 giờ
+            const fiveHoursLater = new Date(now.getTime() + 5 * 60 * 60 * 1000);
+            if (bookingTime >= fiveHoursLater) {
+                return true; // Cho phép gửi biểu mẫu, bàn nào cũng có thể đặt
+            }
+
+            return true; // Cho phép gửi biểu mẫu nếu đặt sau 1 giờ
+        }
+    </script>
 </head>
 <body>
 
@@ -56,7 +78,7 @@ if (!$result_tables) {
         <div class="form-container">
             <h1>Reservation</h1>
             <h2>Book A Table Online</h2>
-            <form action="process_booking.php" method="post">
+            <form action="process_booking.php" method="post" onsubmit="return validateBooking()">
                 <!-- Hiển thị tên người dùng (readonly) -->
                 <label for="name">Your Name</label>
                 <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($userName); ?>" readonly>
@@ -65,26 +87,14 @@ if (!$result_tables) {
                 <label for="table">Choose a Table</label>
                 <select id="table" name="table" required>
                     <?php while ($row = $result_tables->fetch_assoc()): ?>
-                        <option value="<?php echo $row['table_id']; ?>">Table <?php echo $row['table_number']; ?></option>
+                        <option value="<?php echo $row['table_id']; ?>" data-table-number="<?php echo $row['table_number']; ?>">
+                            Table <?php echo $row['table_number']; ?>
+                        </option>
                     <?php endwhile; ?>
                 </select>
-
                 <!-- Các trường còn lại -->
                 <label for="date">Date & Time</label>
                 <input type="datetime-local" id="date" name="date" required>
-
-                <label for="people">No Of People</label>
-                <select id="people" name="people">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                </select>
-
                 <label for="request">Special Request</label>
                 <textarea id="request" name="request" rows="3"></textarea>
 
@@ -93,6 +103,20 @@ if (!$result_tables) {
             </form>
         </div>
     </div>
+    <script>
+        document.querySelector('form').addEventListener('submit', function() {
+            const tableSelect = document.getElementById('table');
+            const selectedOption = tableSelect.options[tableSelect.selectedIndex];
+            const tableNumber = selectedOption.getAttribute('data-table-number');
+
+            const hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = 'table_number'; // Tên của trường
+            hiddenInput.value = tableNumber; // Giá trị của table_number
+
+            this.appendChild(hiddenInput); // Thêm vào form
+        });
+    </script>
 
 </body>
 </html>
