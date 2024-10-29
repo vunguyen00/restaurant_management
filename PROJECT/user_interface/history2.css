@@ -1,0 +1,33 @@
+/* Đặt style cho nội dung lịch sử đặt bàn */
+.history-content {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.history-content h2 {
+    margin-bottom: 20px;
+}
+
+.history-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.history-content table th, .history-content table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.history-content table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.history-content p {
+    margin-top: 20px;
+    color: #888;
+}

@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SESSION['user_name'])) {
 
     // Kiểm tra nếu thời gian đặt bàn ít nhất 1 giờ sau thời gian hiện tại
     if ($bookingTime < (clone $now)->modify('+1 hour')) {
-        die("Bạn cần đặt bàn ít nhất 1 giờ sau thời gian hiện tại.");
+        die("Bạn cần đặt bàn trong khoảng 1 giờ sau thời gian hiện tại.");
     }
 
     // Nếu thời gian đặt bàn là sau 5 giờ, cho phép đặt bất kỳ bàn nào
@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SESSION['user_name'])) {
 
     if ($mysqli->query($sql_insert) === TRUE) {
         // Cập nhật trạng thái bàn thành "occupied"
-        $sql_update_table = "UPDATE restaurant_table SET status = 'occupied' WHERE table_id = '$table_id'";
+        $sql_update_table = "UPDATE restaurant_table SET status = 'booked' WHERE table_id = '$table_id'";
         $mysqli->query($sql_update_table);
 
         // Chuyển hướng về trang đặt bàn sau khi đặt bàn thành công

@@ -14,6 +14,11 @@ body {
     margin: 0;
     display: flex;
 }
+.card.booked {
+    background-color: orange;
+    color: white; /* Điều chỉnh màu chữ nếu cần để dễ nhìn hơn */
+    border: 1px solid #ff9900; /* Thêm viền nếu muốn nổi bật */
+}
 
 /* Sidebar Styles */
 .sidebar {
@@ -265,4 +270,69 @@ body {
     color: white;
     border: none;
     cursor: pointer;
+}
+/* Giao diện nhắn tin */
+.message-container {
+    position: fixed;
+    bottom: 20px; /* Khoảng cách từ đáy màn hình */
+    right: 20px; /* Khoảng cách từ bên phải màn hình */
+    width: 300px; /* Chiều rộng của hộp nhắn tin */
+    background-color: white; /* Màu nền */
+    border: 1px solid #ccc; /* Viền xung quanh */
+    border-radius: 8px; /* Bo góc */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Đổ bóng */
+    display: none; /* Ẩn mặc định */
+    flex-direction: column; /* Sắp xếp theo chiều dọc */
+    z-index: 1000; /* Đảm bảo nằm trên các phần khác */
+}
+
+.message-header {
+    background-color: #007bff; /* Màu nền cho header */
+    color: white; /* Màu chữ */
+    padding: 10px; /* Khoảng cách bên trong */
+    border-radius: 8px 8px 0 0; /* Bo góc cho phần đầu */
+    cursor: pointer; /* Con trỏ khi di chuột */
+    text-align: center; /* Canh giữa */
+}
+
+.message-content {
+    max-height: 300px; /* Chiều cao tối đa */
+    overflow-y: auto; /* Cuộn dọc nếu nội dung vượt quá chiều cao */
+    padding: 10px; /* Khoảng cách bên trong */
+    border-bottom: 1px solid #ccc; /* Viền dưới */
+}
+
+.message-form {
+    display: flex; /* Sắp xếp các phần tử trong form theo hàng */
+    padding: 10px; /* Khoảng cách bên trong */
+}
+
+.message-form input[type="text"] {
+    flex: 1; /* Chiếm toàn bộ không gian còn lại */
+    padding: 5px; /* Khoảng cách bên trong */
+    border: 1px solid #ccc; /* Viền */
+    border-radius: 4px; /* Bo góc */
+    margin-right: 5px; /* Khoảng cách giữa input và button */
+}
+
+.message-form button {
+    padding: 5px 10px; /* Khoảng cách bên trong */
+    background-color: #007bff; /* Màu nền cho nút */
+    color: white; /* Màu chữ */
+    border: none; /* Không viền */
+    border-radius: 4px; /* Bo góc */
+    cursor: pointer; /* Con trỏ khi di chuột */
+}
+
+.message-item {
+    margin: 5px 0; /* Khoảng cách giữa các tin nhắn */
+}
+
+.message-item.admin {
+    color: blue; /* Màu chữ cho admin */
+}
+
+.message-item.user {
+    color: green; /* Màu chữ cho user */
+    text-align: right; /* Canh phải */
 }

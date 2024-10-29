@@ -110,6 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['order_id'])) {
             <li><a href="orders.php">Orders</a></li>
             <li><a href="foods.php">Foods</a></li>
             <li><a href="books.php">Bookings</a></li>
+            <li><a href="statistics.php" class="button">Revenue & Dish Statistics</a></li>
         </ul>
     </div>
 

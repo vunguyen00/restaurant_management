@@ -25,12 +25,12 @@ if (isset($_SESSION['user_name'])) {
             <h1 style="color: #ff9900;">Restaurant</h1>
         </div>
         <div class="nav-links">
-            <a href="index.php">HOME</a>
+            <a href="HomePage.php">HOME</a>
             <a href="about.php">ABOUT</a>
-            <a href="#">SERVICE</a>
-            <a href="#">CONTACT</a>
             <a href="booking.php">BOOKING</a>
+            <a href="history2.php">VIEW BOOKING HISTORY</a>
             <a href="order.php">ORDER</a>
+            <a href="history.php">BILL</a>
             <div class="dropdown">
                 <a href="#" class="user-btn"><?php echo htmlspecialchars($userName); ?></a>
                 <div class="dropdown-content">

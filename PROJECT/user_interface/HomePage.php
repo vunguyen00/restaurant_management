@@ -1,3 +1,14 @@
+<?php
+include 'config/config.php';
+session_start(); // Bắt đầu session để sử dụng $_SESSION
+
+// Kiểm tra xem người dùng đã đăng nhập hay chưa
+if (isset($_SESSION['user_name'])) {
+    $userName = $_SESSION['user_name'];  // Lấy tên người dùng từ session
+} else {
+    $userName = "USER"; 
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,14 +25,18 @@
             <h1 style="color: #ff9900;">Restaurant</h1>
         </div>
         <div class="nav-links">
-            <a href="#">HOME</a>
-            <a href="#">ABOUT</a>
-            <a href="#">SERVICE</a>
-            <a href="#">CONTACT</a>
-            <a href="booking.html">BOOKING</a>
-            <a href="order.html">ORDER</a>
-            <a href="cart.html">CART</a>
-            <a href="#">USER</a>
+            <a href="HomePage.php">HOME</a>
+            <a href="about.php">ABOUT</a>
+            <a href="booking.php">BOOKING</a>
+            <a href="history2.php">VIEW BOOKING HISTORY</a>
+            <a href="order.php">ORDER</a>
+            <a href="history.php">BILL</a>
+            <div class="dropdown">
+                <a href="#" class="user-btn"><?php echo htmlspecialchars($userName); ?></a>
+                <div class="dropdown-content">
+                    <a href="logout.php">Log Out</a>
+                </div>
+            </div>
         </div>
     </div>
 

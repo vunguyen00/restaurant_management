@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Chuyển hướng dựa trên vai trò
             if ($row['role'] == 0) {
-                header("Location: user_interface/order.php");
+                header("Location: user_interface/HomePage.php");
             } else {
                 header("Location: admin_interface/admin.php");
             }
