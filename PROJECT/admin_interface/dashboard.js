@@ -338,36 +338,3 @@ if (event.target === receiptModal) {
     receiptModal.style.display = "none";
 }
 };
-
-// JavaScript để xử lý modal ngồi ghép
-document.querySelectorAll('.join-btn').forEach(button => {
-    button.addEventListener('click', function () {
-        const tableId = this.getAttribute('data-id');
-        document.getElementById('joinTableId').value = tableId;
-        document.getElementById('joinTableModal').style.display = 'block';
-    });
-});
-
-// Đóng modal ngồi ghép
-document.getElementById('closeJoinTableModal').onclick = () => {
-    document.getElementById('joinTableModal').style.display = 'none';
-};
-
-// Xử lý khi gửi form ngồi ghép
-document.getElementById('joinTableForm').onsubmit = async (event) => {
-    event.preventDefault();
-    const formData = new FormData(event.target);
-
-    const response = await fetch('add_join_order.php', {
-        method: 'POST',
-        body: formData
-    });
-
-    const result = await response.json();
-    if (result.success) {
-        alert("Đã thêm đơn hàng cho khách ngồi ghép.");
-        location.reload();
-    } else {
-        alert("Thêm đơn hàng thất bại. " + result.message);
-    }
-};

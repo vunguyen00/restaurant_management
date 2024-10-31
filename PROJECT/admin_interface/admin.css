@@ -336,3 +336,67 @@ body {
     color: green; /* Màu chữ cho user */
     text-align: right; /* Canh phải */
 }
+.chat-icon {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.message-container {
+    display: none;
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 300px;
+    max-height: 400px;
+    background-color: #f9f9f9;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+.user-list {
+    background-color: #f3f3f3;
+    padding: 10px;
+    border-right: 1px solid #ddd;
+    width: 100px;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.user-item {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.user-item:hover {
+    background-color: #ddd;
+}
+
+.chat-area {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.message-header {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.message-content {
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-bottom: 10px;
+}
+
+.message-form {
+    display: flex;
+    align-items: center;
+}
+
+.message-form input {
+    flex-grow: 1;
+    padding: 5px;
+    margin-right: 5px;
+}

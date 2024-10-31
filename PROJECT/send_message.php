@@ -1,21 +1,21 @@
 <?php
 include("config/config.php");
-session_start();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $input = json_decode(file_get_contents('php://input'), true);
-    $message = $mysqli->real_escape_string($input['message']);
-    $toUser = $mysqli->real_escape_string($input['to']);
-    $fromUser = $_SESSION['user_name'];
+header('Content-Type: application/json');
+$data = json_decode(file_get_contents('php://input'), true);
 
-    // Insert the message into the database
-    $query = "INSERT INTO messages (from_user, to_user, message) VALUES ('$fromUser', '$toUser', '$message')";
+if (isset($data['message']) && isset($data['to'])) {
+    $message = $mysqli->real_escape_string($data['message']);
+    $to = $mysqli->real_escape_string($data['to']);
+    
+    // Insert the message into the database (assuming you have a table called messages)
+    $query = "INSERT INTO messages (sender, receiver, message) VALUES ('$userName', '$to', '$message')";
     if ($mysqli->query($query)) {
         echo json_encode(['success' => true]);
     } else {
         echo json_encode(['success' => false, 'error' => $mysqli->error]);
     }
 } else {
-    echo json_encode(['success' => false, 'error' => 'Invalid request method']);
+    echo json_encode(['success' => false, 'error' => 'Invalid input']);
 }
 ?>

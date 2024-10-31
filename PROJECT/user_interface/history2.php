@@ -12,7 +12,7 @@ if (!isset($_SESSION['user_name']) || !isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 
 // Truy vấn lịch sử đặt bàn của người dùng hiện tại
-$sql = "SELECT b.booking_id, t.table_number, b.booking_time, b.people, b.special_request
+$sql = "SELECT b.booking_id, t.table_number, b.booking_time, b.special_request
         FROM booking_history b
         JOIN restaurant_table t ON b.table_id = t.table_id
         WHERE b.user_id = ?
@@ -58,7 +58,6 @@ $result = $stmt->get_result();
                         <th>Booking ID</th>
                         <th>Table Number</th>
                         <th>Booking Time</th>
-                        <th>Number of People</th>
                         <th>Special Request</th>
                     </tr>
                 </thead>
@@ -68,7 +67,6 @@ $result = $stmt->get_result();
                             <td><?php echo htmlspecialchars($row['booking_id']); ?></td>
                             <td><?php echo htmlspecialchars($row['table_number']); ?></td>
                             <td><?php echo htmlspecialchars($row['booking_time']); ?></td>
-                            <td><?php echo htmlspecialchars($row['people']); ?></td>
                             <td><?php echo htmlspecialchars($row['special_request']); ?></td>
                         </tr>
                     <?php endwhile; ?>
