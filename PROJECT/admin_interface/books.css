@@ -5,54 +5,71 @@
     box-sizing: border-box;
 }
 
-/* Set body and default font */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f0f2f5;
-    color: #333;
-    line-height: 1.6;
-    display: flex;
+    background: linear-gradient(rgba(233, 239, 246, 0.7), rgba(233, 239, 246, 0.7)), url('../user_interface/images/da4.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    padding: 20px;
+    border-radius: 8px;
+}
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: -1;
 }
 
 /* Sidebar Styles */
 .sidebar {
     width: 250px;
-    background-color: #2c3e50;
+    background-color: rgba(0, 0, 0, 0.5);
     height: 100vh;
     padding: 20px;
     position: fixed;
     top: 0;
     left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    border-right: 2px solid #ff9900;
 }
 
 .sidebar h2 {
-    color: #ecf0f1;
+    color: #ff9900;
     font-size: 24px;
     text-align: center;
     margin-bottom: 30px;
+    border-bottom: 2px solid #fff;
+    padding-bottom: 10px;
 }
 
 .sidebar ul {
     list-style-type: none;
-    padding: 0;
 }
 
 .sidebar ul li {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .sidebar ul li a {
-    color: #ecf0f1;
+    color: #bdc3c7;
     text-decoration: none;
     font-size: 18px;
     padding: 10px;
     display: block;
-    transition: background-color 0.3s ease;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .sidebar ul li a:hover {
-    background-color: #34495e;
-    border-radius: 5px;
+    background-color: #ff9900;
+    color: #fff;
 }
 
 /* Main Content Styles */
@@ -60,24 +77,102 @@ body {
     margin-left: 250px;
     padding: 20px;
     width: calc(100% - 250px);
-    background-color: #fff;
     min-height: 100vh;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.9); /* Thêm nền sáng cho nội dung chính */
 }
 
 /* Navbar Styles */
 .navbar {
     display: flex;
     justify-content: space-between;
-    background-color: #ecf0f1;
-    padding: 10px;
-    border-bottom: 2px solid #bdc3c7;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 15px;
+    border-bottom: 2px solid #dcdde1;
+    border-radius: 8px;
+    margin-bottom: 20px;
 }
 
 .navbar a {
-    color: #333;
+    color: #ff9900;
     text-decoration: none;
     font-size: 18px;
+    transition: color 0.3s ease;
+}
+
+.navbar a:hover {
+    color: #2980b9;
+}
+
+.bookings-section h2 {
+    margin: 20px 0;
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+form input[type="text"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: calc(100% - 120px);
+}
+
+form button {
+    padding: 10px;
+    background-color: #2980b9;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #0056b3;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+table th {
+    background-color: #343a40;
+    color: white;
+}
+
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.user-btn {
+    color: #2d3e50;
+    font-size: 18px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.user-btn:hover {
+    background-color: #2980b9;
+    color: white;
 }
 
 /* Bookings Section Styles */
@@ -113,18 +208,20 @@ tr:hover {
 }
 
 /* Button Styles */
-.status-btn, .delete-btn {
+.status-btn, .delete-btn, .create-btn {
     background-color: #2980b9;
     color: white;
     border: none;
-    padding: 5px 10px;
-    cursor: pointer;
+    padding: 12px 20px;
+    font-size: 16px;
     border-radius: 5px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
 }
 
-.status-btn:hover, .delete-btn:hover {
-    background-color: #3498db;
+.status-btn:hover, .delete-btn:hover, .create-btn:hover {
+    background-color: #ff9900;
+    transform: translateY(-2px);
 }
 
 /* Responsive Design */

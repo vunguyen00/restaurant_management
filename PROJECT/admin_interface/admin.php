@@ -61,7 +61,7 @@ if ($userResult->num_rows > 0) {
 
     <div class="main-content">
         <div class="navbar">
-            <a href="#">Home</a>
+            <a href="#">HOME</a>
             <div class="dropdown">
                 <a href="#" class="user-btn"><?php echo htmlspecialchars($userName); ?></a>
                 <div class="dropdown-content">

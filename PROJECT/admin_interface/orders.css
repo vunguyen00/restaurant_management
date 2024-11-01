@@ -1,58 +1,78 @@
-/* Reset CSS to remove default browser styles */
+/* Reset CSS để loại bỏ các kiểu mặc định của trình duyệt */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Set body and default font */
+/* Thiết lập body và phông chữ mặc định */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f0f2f5;
-    color: #333;
-    line-height: 1.6;
-    display: flex;
+    background: linear-gradient(rgba(233, 239, 246, 0.7), rgba(233, 239, 246, 0.7)), url('../user_interface/images/da4.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+/* Thêm lớp phủ tối cho body */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: -1;
 }
 
 /* Sidebar Styles */
 .sidebar {
     width: 250px;
-    background-color: #2c3e50;
+    background-color: rgba(0, 0, 0, 0.5);
     height: 100vh;
     padding: 20px;
     position: fixed;
     top: 0;
     left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    border-right: 2px solid #ff9900; /* Thêm viền bên phải để nổi bật */
 }
 
 .sidebar h2 {
-    color: #ecf0f1;
+    color: #ff9900;
     font-size: 24px;
     text-align: center;
     margin-bottom: 30px;
+    border-bottom: 2px solid #fff;
+    padding-bottom: 10px;
 }
 
 .sidebar ul {
     list-style-type: none;
-    padding: 0;
 }
 
 .sidebar ul li {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .sidebar ul li a {
-    color: #ecf0f1;
+    color: #bdc3c7;
     text-decoration: none;
     font-size: 18px;
     padding: 10px;
     display: block;
-    transition: background-color 0.3s ease;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .sidebar ul li a:hover {
-    background-color: #34495e;
-    border-radius: 5px;
+    background-color: #ff9900;
+    color: #fff;
 }
 
 /* Main Content Styles */
@@ -60,58 +80,66 @@ body {
     margin-left: 250px;
     padding: 20px;
     width: calc(100% - 250px);
-    background-color: #fff;
     min-height: 100vh;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.9); /* Thêm nền sáng cho nội dung chính */
 }
 
 /* Navbar Styles */
 .navbar {
     display: flex;
     justify-content: space-between;
-    background-color: #ecf0f1;
-    padding: 10px;
-    border-bottom: 2px solid #bdc3c7;
-}
-
-.navbar a {
-    color: #333;
-    text-decoration: none;
-    font-size: 18px;
-}
-
-/* Orders Section Styles */
-.orders-section {
-    margin-top: 20px;
-}
-
-.orders-section h2 {
-    font-size: 24px;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 15px;
+    border-bottom: 2px solid #dcdde1;
+    border-radius: 8px;
     margin-bottom: 20px;
 }
 
-/* Input and Button Styles */
-input[type="text"] {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #bdc3c7;
-    border-radius: 5px;
-    margin-right: 10px;
+.navbar a {
+    color: #ff9900;
+    text-decoration: none;
+    font-size: 18px;
+    transition: color 0.3s ease;
 }
 
-button[type="submit"] {
-    background-color: #2980b9;
-    color: white;
+.navbar a:hover {
+    color: #2980b9;
+}
+
+.user-btn {
+    color: #2d3e50;
+    font-size: 18px;
+    background-color: transparent;
     border: none;
-    padding: 10px 20px;
     cursor: pointer;
-    font-size: 16px;
+    padding: 10px 15px;
     border-radius: 5px;
     transition: background-color 0.3s ease;
 }
 
-button[type="submit"]:hover {
-    background-color: #3498db;
+.user-btn:hover {
+    background-color: #2980b9;
+    color: white;
+}
+
+/* Button Styles */
+.create-btn {
+    background-color: #2980b9;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
+}
+
+.create-btn:hover {
+    background-color: #ff9900;
+    transform: translateY(-2px);
 }
 
 /* Table Styles */
@@ -121,54 +149,56 @@ table {
     margin-top: 20px;
 }
 
-th, td {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+table, th, td {
+    border: 1px solid #ddd;
 }
 
 th {
-    background-color: #f9f9f9;
-    font-weight: bold;
+    background-color: #f2f2f2;
+    color: #333;
+    padding: 12px;
 }
 
-tr:hover {
-    background-color: #f1f1f1;
+td {
+    padding: 12px;
+    text-align: left;
 }
 
-/* Modal Styles */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4);
-}
-
-.modal-content {
-    background-color: #fff;
-    margin: 10% auto;
+/* Card Styles */
+.card {
+    background-color: rgba(0, 0, 0, 0.6);
     padding: 20px;
     border-radius: 10px;
-    width: 400px;
-    position: relative;
+    width: 220px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
-.close {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    color: #333;
-    font-size: 24px;
-    cursor: pointer;
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
-.close:hover {
-    color: #e74c3c;
+.card.booked {
+    background-color: #ffaf40;
+    color: #fff;
+}
+
+.card.occupied {
+    background-color: #3498db;
+    color: #fff;
+}
+
+.card h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: white;
+}
+
+/* Selected Card */
+.selected {
+    border: 2px solid #2980b9;
 }
 
 /* Responsive Design */
@@ -187,4 +217,123 @@ tr:hover {
         flex-direction: column;
         align-items: flex-start;
     }
+}
+
+/* Dropdown Styles */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 97px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 5px;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+    border-radius: 5px;
+}
+
+/* Button Styles for Removing */
+.remove-btn {
+    margin-left: 10px;
+    padding: 8px 12px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.remove-btn:hover {
+    background-color: #c0392b;
+    transform: scale(1.05);
+}
+
+.remove-btn:active {
+    background-color: #a93226;
+    transform: scale(0.98);
+}
+
+/* Message Container Styles */
+.message-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 1000;
+}
+
+/* Orders Section Styles */
+.orders-section {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.orders-section h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ff9900;
+    padding-bottom: 8px;
+}
+
+/* Form Styles */
+.orders-section form {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.orders-section form input[type="text"] {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 250px;
+    transition: border-color 0.3s ease;
+}
+
+.orders-section form input[type="text"]:focus {
+    border-color: #ff9900;
+    outline: none;
+    box-shadow: 0 0 5px rgba(255, 153, 0, 0.3);
+}
+
+.orders-section form button[type="submit"] {
+    background-color: #2980b9;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.orders-section form button[type="submit"]:hover {
+    background-color: #ff9900;
+    transform: translateY(-2px);
 }

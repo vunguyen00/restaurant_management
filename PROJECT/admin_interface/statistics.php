@@ -81,7 +81,7 @@ if (isset($_POST['export_excel'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Statistics</title>
-    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="statistics.css">
 </head>
 <body>
     <div class="sidebar">
@@ -92,6 +92,7 @@ if (isset($_POST['export_excel'])) {
             <li><a href="orders.php">Orders</a></li>
             <li><a href="foods.php">Foods</a></li>
             <li><a href="books.php">Bookings</a></li>
+            <li><a href="statistics.php" class="button">Revenue & Dish Statistics</a></li>
         </ul>
     </div>
 
