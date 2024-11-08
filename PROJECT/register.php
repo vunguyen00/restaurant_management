@@ -64,20 +64,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="registercss.css">
 </head>
 <body>
-    <form method="POST" action="register.php">
-        <label for="username">Tên đăng nhập:</label>
-        <input type="text" id="username" name="username" placeholder="Nhập tên đăng nhập" required><br>
+<form method="POST" action="register.php">
+    <label for="username">Username</label>
+    <input type="text" id="username" name="username" placeholder="Enter your username" required><br>
 
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" placeholder="Nhập email" required><br>
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" placeholder="Enter your email" required><br>
 
-        <label for="phone">Số điện thoại:</label>
-        <input type="text" id="phone" name="phone" placeholder="Nhập số điện thoại"><br>
+    <label for="phone">Phone Number</label>
+    <input type="text" id="phone" name="phone" placeholder="Enter your phone number"><br>
 
-        <label for="password">Mật khẩu:</label>
-        <input type="password" id="password" name="password" placeholder="Nhập mật khẩu" required><br>
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" placeholder="Enter your password" required><br>
 
-        <button type="submit">Đăng ký</button>
-    </form>
+    <button type="submit">Register</button>
+    <!-- Login link below register button -->
+    <p class="register-link">Already have an account? <a href="login.php">Login</a></p>
+</form>
+
 </body>
 </html>

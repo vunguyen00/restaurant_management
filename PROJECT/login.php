@@ -50,13 +50,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <form method="POST" action="login.php">
-        <label for="username">Tên đăng nhập:</label>
-        <input type="text" id="username" name="username" placeholder="Nhập tên đăng nhập" required><br>
+        <label for="username">Your Name</label>
+        <input type="text" id="username" name="username" placeholder="Enter your username" required><br>
 
-        <label for="password">Mật khẩu:</label>
-        <input type="password" id="password" name="password" placeholder="Nhập mật khẩu" required><br>
+        <label for="password">Your Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required><br>
 
-        <button type="submit">Đăng nhập</button>
+        <button type="submit">Log In</button>
+
+        <p class="register-link">Don't have an account? <a href="register.php">Sign up now</a></p>
     </form>
 </body>
 </html>
