@@ -45,7 +45,7 @@ if (isset($_SESSION['user_name'])) {
         <div class="text-content">
             <h1>Enjoy Our Delicious Meal</h1>
             <p>You want a romantic place to have dinner with delicious food. Come to us. A place where you will not be disappointed</p>
-            <a href="#" class="btn">BOOK A TABLE</a>
+            <a href="booking.php" class="btn">BOOK A TABLE</a>
         </div>
         <div class="image-content">
             <img src="images/da1.jpg" alt="Grilled Food" style="max-width: 100%; border-radius: 10px;">

@@ -10,57 +10,66 @@ body {
 .container {
     width: 80%;
     margin: 30px auto;
-    background-color: #fff;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
+    background-color: #ffffff;
+    padding: 25px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
 }
 
 h1 {
     text-align: center;
     color: #4a00e0;
     text-transform: uppercase;
-    margin-bottom: 40px;
+    margin-bottom: 35px;
+    font-size: 2rem;
 }
 
 .order {
     background-color: #fafafa;
     border: 1px solid #ddd;
-    padding: 15px;
-    margin-bottom: 30px;
-    border-radius: 8px;
+    padding: 18px;
+    margin-bottom: 25px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .order h3 {
     color: #2b1055;
     font-weight: bold;
+    font-size: 1.3rem;
+    margin-bottom: 8px;
 }
 
 .order p {
     margin: 5px 0;
-    font-size: 16px;
+    font-size: 1rem;
     color: #666;
+    line-height: 1.6;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
 }
 
 table th, table td {
     border: 1px solid #ddd;
-    padding: 10px;
+    padding: 12px;
     text-align: left;
+    font-size: 0.95rem;
 }
 
 table th {
-    background-color: #f4f4f9;
+    background-color: #e0e0eb;
     color: #333;
+    font-weight: bold;
+    text-transform: uppercase;
 }
 
 table td {
-    background-color: #fff;
+    background-color: #ffffff;
 }
 
 table td:nth-child(3) {
@@ -69,7 +78,7 @@ table td:nth-child(3) {
 }
 
 hr {
-    border: 0;
+    border: none;
     height: 1px;
     background-color: #ddd;
     margin: 20px 0;
@@ -77,23 +86,27 @@ hr {
 
 p.no-history {
     text-align: center;
-    font-size: 18px;
+    font-size: 1.1rem;
     color: #999;
+    font-style: italic;
 }
 
-/* Nút quay trở lại */
-.back-button{
+/* Back Button Styling */
+.back-button {
     background-color: #4a00e0;
-    color: white;
-    padding: 10px 20px;
+    color: #ffffff;
+    padding: 12px 25px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 1rem;
     margin-top: 20px;
     display: block;
     width: fit-content;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
+
 .back-button:hover {
     background-color: #8e2de2;
+    transform: scale(1.05);
 }

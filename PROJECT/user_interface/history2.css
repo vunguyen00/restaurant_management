@@ -1,33 +1,158 @@
+ /* Basic CSS styling */
+ body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #1a1a1a;
+    color: #fff;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #333;
+}
+
+.navbar a {
+    color: #ff9900;
+    text-decoration: none;
+    margin: 0 15px;
+}
+
+.navbar a:hover {
+    color: #fff;
+}
 /* Đặt style cho nội dung lịch sử đặt bàn */
 .history-content {
     max-width: 800px;
     margin: auto;
     padding: 20px;
     text-align: center;
+    background-color: #1a1a1a; /* Darker background for consistency with body */
+    color: #ffffff; /* White text */
+    border-radius: 8px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.5);
 }
 
 .history-content h2 {
     margin-bottom: 20px;
+    font-size: 2rem; /* Larger title */
+    color: #ff9900; /* Orange color for headers */
 }
 
 .history-content table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    background-color: #333; /* Slightly lighter background for the table */
 }
 
 .history-content table th, .history-content table td {
-    padding: 10px;
-    border: 1px solid #ddd;
+    padding: 15px; /* Larger padding for improved readability */
+    border: 1px solid #666; /* Light grey border */
     text-align: center;
+    color: #ffffff;
 }
 
 .history-content table th {
-    background-color: #f4f4f4;
+    background-color: #444; /* Dark background for header */
     font-weight: bold;
+    color: #ff9900; /* Orange text for header */
+}
+
+.history-content table tr:nth-child(even) {
+    background-color: #2a2a2a; /* Slightly darker background for alternating rows */
 }
 
 .history-content p {
     margin-top: 20px;
-    color: #888;
+    color: #888888; /* Grey text for additional information */
+    font-style: italic;
+}
+
+.history-content a {
+    color: #ff9900;
+    text-decoration: none;
+}
+
+.history-content a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+/* Button styling */
+.history-content .btn {
+    display: inline-block;
+    padding: 12px 25px;
+    background-color: #ff9900;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.history-content .btn:hover {
+    background-color: #e68a00;
+    color: #ffffff;
+}
+
+
+/* Dropdown Styling */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.user-btn {
+    color: #ffffff;
+    /* background-color: #4a00e0; */
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.user-btn:hover {
+    background-color: #e68a00;
+    transform: scale(1.05);
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #ffffff;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    overflow: hidden;
+    z-index: 1;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.dropdown-content a {
+    color: #333;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dropdown-content a:hover {
+    background-color: #f4f4f9;
+    color: #e68a00;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
 }
