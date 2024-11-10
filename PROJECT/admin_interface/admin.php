@@ -105,7 +105,7 @@ if ($userResult->num_rows > 0) {
                         <h4>Customer Information</h4>
                         <label for="customer_name">Name:</label>
                         <input type="text" id="customer_name" placeholder="Enter customer name" required>
-                        
+                        <p></p>
                         <label for="customer_phone">Phone:</label>
                         <input type="text" id="customer_phone" placeholder="Enter customer phone" required>
                         

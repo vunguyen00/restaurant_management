@@ -52,10 +52,13 @@ $menuResult = $results['menu'];
                     <form id="addFoodForm">
                         <label for="name">Food Name:</label>
                         <input type="text" id="name" name="name" required>
+                        <p></p>
                         <label for="price">Price:</label>
                         <input type="number" id="price" name="price" required>
+                        <p></p>
                         <label for="description">Description:</label>
                         <textarea id="description" name="description"></textarea>
+                        <p></p>
                         <button type="submit">Add Food</button>
                     </form>
                 </div>

@@ -222,30 +222,150 @@ body::before {
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.7); /* Tối ưu hóa độ tối */
 }
-
+/* Modal container */
+#addTableModal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+}
 .modal-content {
     animation: fadeIn 0.3s; /* Thêm hiệu ứng fade-in */
+    background-color: #fff;
+    margin: 10% auto; /* Center the modal */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 400px; /* Width of modal */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
 }
+.modal-content label {
+    display: block;
+    font-weight: bold;
+    margin-top: 10px;
+}
+/* Input styling */
+.modal-content input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 5px;
+}
+
 
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
 }
 
+/* Close button */
 .close {
     position: absolute;
     top: 10px;
-    right: 20px;
-    color: #333;
+    right: 15px;
+    color: #aaa;
     font-size: 24px;
+    font-weight: bold;
     cursor: pointer;
 }
 
-.close:hover {
-    color: #e74c3c;
+.close:hover,
+.close:focus {
+    color: #555;
+    text-decoration: none;
+}
+
+/* Form group styling */
+.form-group {
+    margin-bottom: 15px;
+}
+
+/* Label styling */
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* Input styling */
+.form-group input[type="number"] {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Submit button styling */
+button[type="submit"] {
+    background-color: #2980b9;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button[type="submit"]:hover {
+    background-color: #ff9900;
+}
+
+/* Buttons */
+#confirmDeleteBtn,
+#cancelDeleteBtn {
+    padding: 10px 20px;
+    margin: 10px 5px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Confirm button */
+#confirmDeleteBtn {
+    background-color: #d9534f; /* Red */
+    color: #fff;
+}
+
+/* Cancel button */
+#cancelDeleteBtn {
+    background-color: #6c757d; /* Gray */
+    color: #fff;
+}
+
+/* Button hover effect */
+#confirmDeleteBtn:hover {
+    background-color: #c9302c;
+}
+
+#cancelDeleteBtn:hover {
+    background-color: #5a6268;
 }
 
 /* Receipt Modal */
+#receiptModal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+}
+#receiptList {
+    list-style-type: none;
+    padding: 0;
+    margin: 10px 0;
+}
 #receiptList li {
     padding: 8px 0;
 }
@@ -271,6 +391,23 @@ body::before {
         flex-direction: column;
         align-items: flex-start;
     }
+}
+
+/* Confirm checkout button */
+#confirmCheckoutBtn {
+    background-color: #2980b9;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 15px;
+    width: 100%;
+}
+
+#confirmCheckoutBtn:hover {
+    background-color: #ff9900;
 }
 /* Dropdown Styles */
 .dropdown {
