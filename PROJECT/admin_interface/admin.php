@@ -1,6 +1,13 @@
 <?php 
 include ("config/config.php");
 session_start();
+
+// Kiểm tra xem người dùng đã đăng nhập chưa
+if (!isset($_SESSION['user_name']) || !isset($_SESSION['user_id'])) {
+    header("Location: ../login.php");
+    exit();
+}
+
 if (isset($_SESSION['user_name'])) {
     $userName = $_SESSION['user_name'];  // Get user name from session
     $userRoleQuery = "SELECT role FROM user WHERE user_name = '$userName'";
