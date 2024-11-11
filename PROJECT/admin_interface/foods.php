@@ -1,11 +1,26 @@
 <?php 
 include("config/config.php");
+session_start();
 
+// Kiểm tra xem người dùng đã đăng nhập chưa
+if (!isset($_SESSION['user_name']) || !isset($_SESSION['user_id'])) {
+    header("Location: ../login.php");
+    exit();
+}
+
+if (isset($_SESSION['user_name'])) {
+    $userName = $_SESSION['user_name'];  // Get user name from session
+    $userRoleQuery = "SELECT role FROM user WHERE user_name = '$userName'";
+    $roleResult = $mysqli->query($userRoleQuery);
+    $userRole = $roleResult->fetch_assoc()['role'];
+} else {
+    $userName = "USER"; 
+}
 $results = array();
 
 // Execute the first query, excluding ingredients
 $query1 = "
-    SELECT m.dish_id, m.dish_name, m.price, m.dish_describe
+    SELECT m.dish_id, m.dish_name, m.price, m.dish_describe, m.image_path
     FROM menu m
 ";
 
@@ -39,7 +54,12 @@ $menuResult = $results['menu'];
     <div class="main-content">
         <div class="navbar">
             <a href="#">Home</a>
-            <span>admin</span>
+            <div class="dropdown">
+                <button id="userBtn" class="user-btn" style="color:orange"><?php echo htmlspecialchars($userName); ?></button>
+                <div class="dropdown-content">
+                    <a href="logout.php">Log Out</a>
+                </div>
+            </div>
         </div>
 
         <div class="foods-section">
@@ -49,7 +69,7 @@ $menuResult = $results['menu'];
                 <div class="modal-content">
                     <span class="close-add-food">&times;</span>
                     <h2>Add New Food</h2>
-                    <form id="addFoodForm">
+                    <form id="addFoodForm" enctype="multipart/form-data">
                         <label for="name">Food Name:</label>
                         <input type="text" id="name" name="name" required>
                         <p></p>
@@ -58,6 +78,9 @@ $menuResult = $results['menu'];
                         <p></p>
                         <label for="description">Description:</label>
                         <textarea id="description" name="description"></textarea>
+                        <p></p>
+                        <label for="image">Image:</label>
+                        <input type="file" id="image" name="image" accept="image/*" required>
                         <p></p>
                         <button type="submit">Add Food</button>
                     </form>
@@ -68,7 +91,7 @@ $menuResult = $results['menu'];
                 <div class="modal-content">
                     <span class="close-update">&times;</span>
                     <h2>Update Food</h2>
-                    <form id="updateFoodForm">
+                    <form id="updateFoodForm" enctype="multipart/form-data">
                         <input type="hidden" id="update_id" name="id">
                         <label for="update_name">Food Name:</label>
                         <input type="text" id="update_name" name="name" required>
@@ -76,6 +99,8 @@ $menuResult = $results['menu'];
                         <input type="number" id="update_price" name="price" required>
                         <label for="update_description">Description:</label>
                         <textarea id="update_description" name="description"></textarea>
+                        <label for="update_image">Image:</label>
+                        <input type="file" id="update_image" name="image" accept="image/*">
                         <button type="submit">Update Food</button>
                     </form>
                 </div>
@@ -85,6 +110,7 @@ $menuResult = $results['menu'];
                 <thead>
                     <tr>
                         <th>#</th>
+                        <th>Image</th>
                         <th>Name</th>
                         <th>Price</th>
                         <th>Describe</th>
@@ -97,6 +123,7 @@ $menuResult = $results['menu'];
                         <?php while ($row = $menuResult->fetch_assoc()): ?>
                             <tr>
                                 <td><?php echo htmlspecialchars($row['dish_id']); ?></td>
+                                <td><img src="<?php echo htmlspecialchars($row['image_path']); ?>" alt="Food Image" width="200"></td>
                                 <td><?php echo htmlspecialchars($row['dish_name']); ?></td>
                                 <td>$<?php echo htmlspecialchars($row['price']); ?></td>
                                 <td><?php echo htmlspecialchars($row['dish_describe']); ?></td>
@@ -106,7 +133,7 @@ $menuResult = $results['menu'];
                         <?php endwhile; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="6">No food items found.</td>
+                            <td colspan="7">No food items found.</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>
@@ -154,21 +181,26 @@ $menuResult = $results['menu'];
             updateFoodModal.style.display = "block";
         }
 
-        // Handle update food form
+        // Xử lý cập nhật món ăn
         $('#updateFoodForm').on('submit', function(event) {
             event.preventDefault();
+
+            var formData = new FormData(this);
+
             $.ajax({
                 type: "POST",
                 url: "update_food.php",
-                data: $(this).serialize(),
+                data: formData,
+                processData: false,
+                contentType: false,
                 success: function(response) {
                     alert(response);
+                    $('#updateFoodModal').hide();
                     location.reload();
                 }
             });
         });
-
-        // Handle delete food button
+                // Handle delete food button
         $('.delete-btn').click(function() {
             var id = $(this).data('id');
             if (confirm("Are you sure you want to delete this food item?")) {
@@ -184,14 +216,18 @@ $menuResult = $results['menu'];
             }
         });
 
-        // Handle add food form
+        // Xử lý thêm món ăn
         $('#addFoodForm').on('submit', function(event) {
             event.preventDefault();
+
+            var formData = new FormData(this); // Sử dụng FormData để upload file
 
             $.ajax({
                 type: "POST",
                 url: "add_foods_button.php",
-                data: $(this).serialize(),
+                data: formData,
+                processData: false,
+                contentType: false,
                 success: function(response) {
                     alert(response);
                     $('#addFoodModal').hide();
@@ -203,6 +239,22 @@ $menuResult = $results['menu'];
             });
         });
     });
+    </script>
+    <script>
+        // JavaScript for the dropdown
+        var userBtn = document.getElementById('userBtn');
+        var dropdownContent = document.querySelector('.dropdown-content');
+
+        userBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
+        });
+
+        window.addEventListener('click', function (e) {
+            if (!userBtn.contains(e.target) && !dropdownContent.contains(e.target)) {
+                dropdownContent.style.display = 'none';
+            }
+        });
     </script>
 </body>
 </html>

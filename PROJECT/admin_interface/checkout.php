@@ -1,6 +1,21 @@
 <?php
 include 'config/config.php';
-session_start(); // Bắt đầu session
+session_start();
+
+// Kiểm tra xem người dùng đã đăng nhập chưa
+if (!isset($_SESSION['user_name']) || !isset($_SESSION['user_id'])) {
+    header("Location: ../login.php");
+    exit();
+}
+
+if (isset($_SESSION['user_name'])) {
+    $userName = $_SESSION['user_name'];  // Get user name from session
+    $userRoleQuery = "SELECT role FROM user WHERE user_name = '$userName'";
+    $roleResult = $mysqli->query($userRoleQuery);
+    $userRole = $roleResult->fetch_assoc()['role'];
+} else {
+    $userName = "USER"; 
+}
 
 // Enable error reporting for debugging
 ini_set('display_errors', 1);
@@ -133,6 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['table_id'])) {
                     <div class="bill">
                         <h2>Hóa Đơn</h2>
                         <p><strong>Mã Đơn Hàng:</strong> ' . $order_id . '</p>
+                        <p><strong>Ca thanh toán:</strong> ' . $userName . '</p>
                         <p><strong>Tên Khách Hàng:</strong> ' . $customer_name . '</p>
                         <p><strong>Số Điện Thoại:</strong> ' . $customer_phone . '</p>
                         <p><strong>Tổng Tiền:</strong> $' . number_format($total_price, 2) . '</p>

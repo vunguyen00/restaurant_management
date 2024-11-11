@@ -1,7 +1,21 @@
 <?php
-session_start();
 include 'config/config.php';
+session_start();
 
+// Kiểm tra xem người dùng đã đăng nhập chưa
+if (!isset($_SESSION['user_name']) || !isset($_SESSION['user_id'])) {
+    header("Location: ../login.php");
+    exit();
+}
+
+if (isset($_SESSION['user_name'])) {
+    $userName = $_SESSION['user_name'];  // Get user name from session
+    $userRoleQuery = "SELECT role FROM user WHERE user_name = '$userName'";
+    $roleResult = $mysqli->query($userRoleQuery);
+    $userRole = $roleResult->fetch_assoc()['role'];
+} else {
+    $userName = "USER"; 
+}
 // Import PhpSpreadsheet classes
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -99,7 +113,12 @@ if (isset($_POST['export_excel'])) {
     <div class="main-content">
         <div class="navbar">
             <a href="#">Home</a>
-            <span>admin</span>
+            <div class="dropdown">
+                <button id="userBtn" class="user-btn" style="color:orange"><?php echo htmlspecialchars($userName); ?></button>
+                <div class="dropdown-content">
+                    <a href="logout.php">Log Out</a>
+                </div>
+            </div>
         </div>
 
         <div class="statistics-section">
@@ -135,6 +154,22 @@ if (isset($_POST['export_excel'])) {
                     <?php endforeach; ?>
                 </tbody>
             </table>
+            <script>
+                // JavaScript for the dropdown
+                var userBtn = document.getElementById('userBtn');
+                var dropdownContent = document.querySelector('.dropdown-content');
+
+                userBtn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
+                });
+
+                window.addEventListener('click', function (e) {
+                    if (!userBtn.contains(e.target) && !dropdownContent.contains(e.target)) {
+                        dropdownContent.style.display = 'none';
+                    }
+                });
+            </script>
 
             <!-- Export to Excel -->
             <form method="POST" action="">

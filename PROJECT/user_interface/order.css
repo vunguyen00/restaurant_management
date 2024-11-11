@@ -118,7 +118,7 @@ body {
 
 .item {
     width: calc(25% - 40px); /* Tối đa 4 item trong một dòng */
-    min-width: 200px; /* Thiết lập chiều rộng tối thiểu */
+    min-width: 400px; /* Thiết lập chiều rộng tối thiểu */
     border: 1px solid #e0e0e0;
     border-radius: 5px;
     padding: 15px;
@@ -129,7 +129,7 @@ body {
 
 .item img {
     width: 100%; /* Để hình ảnh chiếm toàn bộ chiều rộng của item */
-    max-width: 100px; /* Đặt chiều rộng tối đa cho hình ảnh */
+    max-width: 200px; /* Đặt chiều rộng tối đa cho hình ảnh */
     height: auto; /* Giữ tỷ lệ khung hình của hình ảnh */
     object-fit: cover;
     border-radius: 5px;

@@ -1,11 +1,20 @@
 <?php
+include("config/config.php");
 session_start();
-include 'config/config.php';
 
 // Kiểm tra xem người dùng đã đăng nhập chưa
 if (!isset($_SESSION['user_name']) || !isset($_SESSION['user_id'])) {
     header("Location: ../login.php");
     exit();
+}
+
+if (isset($_SESSION['user_name'])) {
+    $userName = $_SESSION['user_name'];  // Get user name from session
+    $userRoleQuery = "SELECT role FROM user WHERE user_name = '$userName'";
+    $roleResult = $mysqli->query($userRoleQuery);
+    $userRole = $roleResult->fetch_assoc()['role'];
+} else {
+    $userName = "USER"; 
 }
 
 $searchResult = []; // Biến lưu trữ kết quả tìm kiếm
@@ -117,7 +126,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['order_id'])) {
     <div class="main-content">
         <div class="navbar">
             <a href="#">Home</a>
-            <span>admin</span>
+            <div class="dropdown">
+                <button id="userBtn" class="user-btn" style="color:orange"><?php echo htmlspecialchars($userName); ?></button>
+                <div class="dropdown-content">
+                    <a href="logout.php">Log Out</a>
+                </div>
+            </div>
         </div>
 
         <div class="orders-section">
@@ -198,6 +212,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['order_id'])) {
                 <?php endif; ?>
             <?php endif; ?>
         </div>
+        <script>
+                    // JavaScript for the dropdown
+                    var userBtn = document.getElementById('userBtn');
+                    var dropdownContent = document.querySelector('.dropdown-content');
+
+                    userBtn.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
+                    });
+
+                    window.addEventListener('click', function (e) {
+                        if (!userBtn.contains(e.target) && !dropdownContent.contains(e.target)) {
+                            dropdownContent.style.display = 'none';
+                        }
+                    });
+                </script>
     </div>
 </body>
 </html>

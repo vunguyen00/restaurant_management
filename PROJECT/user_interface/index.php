@@ -30,7 +30,7 @@ if (isset($_SESSION['user_name'])) {
             <a href="#">SERVICE</a>
             <a href="#">CONTACT</a>
             <a href="booking.php">BOOKING</a>
-            <a href="order.php">ORDER</a>
+            <a href="order.php">DISHES</a>
             <div class="dropdown">
                 <a href="#" class="user-btn"><?php echo htmlspecialchars($userName); ?></a>
                 <div class="dropdown-content">

@@ -121,11 +121,11 @@ button {
 
 /* Specific Button Styles */
 button[type="submit"] {
-    padding: 12px 25px; /* Adjusts the button padding */
-    font-size: 16px;     /* Sets the font size */
+    padding: 6px 10px; /* Adjusts the button padding */
+    font-size: 12px;     /* Sets the font size */
     background-color: #2980b9; /* Button background color */
     color: white;        /* Text color */
-    margin-top: 15px;    /* Add margin at the top */
+    margin-top: 10px;    /* Add margin at the top */
 }
 
 button[type="submit"]:hover {
@@ -208,4 +208,45 @@ table th {
         flex-direction: column;
         align-items: flex-start;
     }
+}
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 97px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 5px;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+    border-radius: 5px;
+}
+.user-btn {
+    color: #2d3e50;
+    font-size: 18px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.user-btn:hover {
+    background-color: #2980b9;
+    color: white;
 }

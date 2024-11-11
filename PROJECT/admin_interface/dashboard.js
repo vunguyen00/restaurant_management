@@ -338,3 +338,42 @@ if (event.target === receiptModal) {
     receiptModal.style.display = "none";
 }
 };
+        // Close the menu selection modal
+        document.getElementById('closeMenuSelectionModal').onclick = () => {
+            document.getElementById('menuSelectionModal').style.display = 'none';
+        };
+
+        // Handle cancel order button
+        document.getElementById("cancelOrderBtn").addEventListener("click", function () {
+            const selectedTable = document.querySelector(".card.selected");
+            if (selectedTable) {
+                const tableId = selectedTable.getAttribute("data-id");
+                const confirmation = confirm("Are you sure you want to cancel the order for this table?");
+                
+                if (confirmation) {
+                    fetch("cancel_order.php", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ table_id: tableId })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data); // Check response
+                        if (data.success) {
+                            alert("Order cancelled successfully.");
+                            location.reload();
+                        } else {
+                            alert("Failed to cancel the order: " + data.error);
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        alert("An error occurred. Please try again.");
+                    });
+                }
+            } else {
+                alert("Please select a table to cancel the order.");
+            }
+        });

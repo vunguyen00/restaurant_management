@@ -22,7 +22,7 @@ $tablesQuery = "SELECT table_id, table_number,status FROM restaurant_table";
 $tablesResult = $mysqli->query($tablesQuery);
 
 // Get list of dishes from the database
-$menuQuery = "SELECT dish_id, dish_name FROM menu";
+$menuQuery = "SELECT * FROM menu";
 $menuResult = $mysqli->query($menuQuery);
 
 // Get list of admins from the database
@@ -171,10 +171,12 @@ if ($userResult->num_rows > 0) {
                 <?php if ($menuResult->num_rows > 0): ?>
                     <?php while ($dish = $menuResult->fetch_assoc()): ?>
                         <div class="menu-item">
+                            <img src="<?php echo htmlspecialchars($dish['image_path']); ?>" alt="Food Image" width="100">
                             <label>
                                 <input type="checkbox" name="dishes[]" value="<?php echo htmlspecialchars($dish['dish_id']); ?>">
                                 <?php echo htmlspecialchars($dish['dish_name']); ?>
                             </label>
+                            <h3>Mô tả món ăn:<?php echo htmlspecialchars($dish['dish_describe']); ?></h3>
                             <input type="number" name="quantities[<?php echo htmlspecialchars($dish['dish_id']); ?>]" min="1" value="1" style="width: 60px;">
                         </div>
                     <?php endwhile; ?>
@@ -198,100 +200,6 @@ if ($userResult->num_rows > 0) {
 
     <!-- JavaScript Files -->
     <script src="deleteX.js"></script>
-    <script src="dashboard.js"></script>
-    
-    <script>
-        // Close the menu selection modal
-        document.getElementById('closeMenuSelectionModal').onclick = () => {
-            document.getElementById('menuSelectionModal').style.display = 'none';
-        };
-
-        // Handle cancel order button
-        document.getElementById("cancelOrderBtn").addEventListener("click", function () {
-            const selectedTable = document.querySelector(".card.selected");
-            if (selectedTable) {
-                const tableId = selectedTable.getAttribute("data-id");
-                const confirmation = confirm("Are you sure you want to cancel the order for this table?");
-                
-                if (confirmation) {
-                    fetch("cancel_order.php", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({ table_id: tableId })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data); // Check response
-                        if (data.success) {
-                            alert("Order cancelled successfully.");
-                            location.reload();
-                        } else {
-                            alert("Failed to cancel the order: " + data.error);
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Error:", error);
-                        alert("An error occurred. Please try again.");
-                    });
-                }
-            } else {
-                alert("Please select a table to cancel the order.");
-            }
-        });
-
-        // Handle chat icon click
-        const chatIcon = document.getElementById('chatIcon');
-        const messageContainer = document.getElementById('messageContainer');
-
-        chatIcon.addEventListener('click', function () {
-            // Toggle message container display
-            messageContainer.style.display = messageContainer.style.display === 'block' ? 'none' : 'block';
-        });
-        // Handle sending messages
-        const messageForm = document.getElementById('messageForm');
-        messageForm.addEventListener('submit', function (event) {
-            event.preventDefault(); // Prevent default form submission
-
-            const messageInput = document.getElementById('messageInput');
-            const selectedUser = document.getElementById('userSelect').value;
-            const messageContent = document.getElementById('messageContent');
-
-            if (selectedUser) {
-                // Add message to the chat display
-                const newMessage = document.createElement('div');
-                newMessage.textContent = `${userName} to ${selectedUser}: ${messageInput.value}`;
-                messageContent.appendChild(newMessage);
-
-                // Clear input field after sending
-                const messageToSend = messageInput.value;
-                messageInput.value = '';
-
-                // Send message to the server
-                fetch('../send_message.php', {
-                    method: 'POST',
-                    body: JSON.stringify({ message: messageToSend, to: selectedUser }),
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        console.log("Message sent successfully.");
-                    } else {
-                        console.error("Failed to send message:", data.error);
-                    }
-                })
-                .catch(error => {
-                    console.error("Error sending message:", error);
-                });
-            } else {
-                alert("Please select a user to send a message.");
-            }
-        });
-
-    </script>
+    <script src="dashboard.js"></script>    
 </body>
 </html>
