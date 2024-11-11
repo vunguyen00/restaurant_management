@@ -59,7 +59,7 @@ if (!$result_tables) {
             <a href="booking.php">BOOKING</a>
             <a href="history2.php">VIEW BOOKING HISTORY</a>
             <a href="order.php">DISHES</a>
-            <a href="history.php">BILL</a>
+            <!-- <a href="history.php">BILL</a> -->
             <div class="dropdown">
                 <a href="#" class="user-btn"><?php echo htmlspecialchars($userName); ?></a>
                 <div class="dropdown-content">
@@ -77,14 +77,14 @@ if (!$result_tables) {
         </div>
         <div class="form-container">
             <h1>Reservation</h1>
-            <h2>Book A Table Online</h2>
+            <h2 style="color: aliceblue;">Book A Table Online</h2>
             <form action="process_booking.php" method="post" onsubmit="return validateBooking()">
                 <!-- Hiển thị tên người dùng (readonly) -->
-                <label for="name">Your Name</label>
+                <label style="color: aliceblue;" for="name">Your Name</label>
                 <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($userName); ?>" readonly>
 
                 <!-- Thay trường chọn email thành chọn bàn -->
-                <label for="table">Choose a Table</label>
+                <label style="color: aliceblue;" for="table">Choose a Table</label>
                 <select id="table" name="table" required>
                     <?php while ($row = $result_tables->fetch_assoc()): ?>
                         <option value="<?php echo $row['table_id']; ?>" data-table-number="<?php echo $row['table_number']; ?>">
@@ -93,9 +93,9 @@ if (!$result_tables) {
                     <?php endwhile; ?>
                 </select>
                 <!-- Các trường còn lại -->
-                <label for="date">Date & Time</label>
+                <label style="color: aliceblue;" for="date">Date & Time</label>
                 <input type="datetime-local" id="date" name="date" required>
-                <label for="request">Special Request</label>
+                <label style="color: aliceblue;" for="request">Special Request</label>
                 <textarea id="request" name="request" rows="3"></textarea>
 
                 <!-- Nút BOOK NOW -->

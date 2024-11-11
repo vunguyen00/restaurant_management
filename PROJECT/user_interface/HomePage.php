@@ -25,12 +25,16 @@ if (isset($_SESSION['user_name'])) {
             <h1 style="color: #ff9900;">Restaurant</h1>
         </div>
         <div class="nav-links">
-            <a href="HomePage.php">HOME</a>
+            <a style="  background-color: #ff9900; 
+                        color: #fff; 
+                        padding: 10px 15px;
+                        border-radius: 4px;
+                        text-decoration: none;" href="HomePage.php">HOME</a>
             <a href="about.php">ABOUT</a>
             <a href="booking.php">BOOKING</a>
             <a href="history2.php">VIEW BOOKING HISTORY</a>
             <a href="order.php">DISHES</a>
-            <a href="history.php">BILL</a>
+            <!-- <a href="history.php">BILL</a> -->
             <div class="dropdown">
                 <a href="#" class="user-btn"><?php echo htmlspecialchars($userName); ?></a>
                 <div class="dropdown-content">
@@ -43,8 +47,8 @@ if (isset($_SESSION['user_name'])) {
     <!-- Header Content -->
     <div class="header-content">
         <div class="text-content">
-            <h1>Enjoy Our Delicious Meal</h1>
-            <p>You want a romantic place to have dinner with delicious food. Come to us. A place where you will not be disappointed</p>
+            <h1 style="color:#fff">Enjoy Our Delicious Meal</h1>
+            <p style="color:#fff">You want a romantic place to have dinner with delicious food. Come to us. A place where you will not be disappointed</p>
             <a href="booking.php" class="btn">BOOK A TABLE</a>
         </div>
         <div class="image-content">

@@ -52,7 +52,7 @@ $result = $stmt->get_result();
             <a href="booking.php">BOOKING</a>
             <a href="history2.php">VIEW BOOKING HISTORY</a>
             <a href="order.php">DISHES</a>
-            <a href="history.php">BILL</a>
+            <!-- <a href="history.php">BILL</a> -->
             <div class="dropdown">
                 <a href="#" class="user-btn"><?php echo htmlspecialchars($userName); ?></a>
                 <div class="dropdown-content">
@@ -63,33 +63,35 @@ $result = $stmt->get_result();
     </div>
 
     <!-- Booking History Content -->
-    <div class="history-content">
-        <h2>Your Booking History</h2>
-        
-        <?php if ($result->num_rows > 0): ?>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Booking ID</th>
-                        <th>Table Number</th>
-                        <th>Booking Time</th>
-                        <th>Special Request</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php while ($row = $result->fetch_assoc()): ?>
-                        <tr>
-                            <td><?php echo htmlspecialchars($row['booking_id']); ?></td>
-                            <td><?php echo htmlspecialchars($row['table_number']); ?></td>
-                            <td><?php echo htmlspecialchars($row['booking_time']); ?></td>
-                            <td><?php echo htmlspecialchars($row['special_request']); ?></td>
-                        </tr>
-                    <?php endwhile; ?>
-                </tbody>
-            </table>
-        <?php else: ?>
-            <p>You have no booking history.</p>
-        <?php endif; ?>
+    <div class="history-content-a">
+       <div class="history-content">
+            <h2>Your Booking History</h2>
+                
+                <?php if ($result->num_rows > 0): ?>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Booking ID</th>
+                                <th>Table Number</th>
+                                <th>Booking Time</th>
+                                <th>Special Request</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php while ($row = $result->fetch_assoc()): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($row['booking_id']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['table_number']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['booking_time']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['special_request']); ?></td>
+                                </tr>
+                            <?php endwhile; ?>
+                        </tbody>
+                    </table>
+                <?php else: ?>
+                    <p>You have no booking history.</p>
+                <?php endif; ?>
+        </div>
     </div>
 
 </body>

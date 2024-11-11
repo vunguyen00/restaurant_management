@@ -108,7 +108,7 @@ foreach ($_SESSION['cart'] as $item) {
             <a href="booking.php">BOOKING</a>
             <a href="history2.php">VIEW BOOKING HISTORY</a>
             <a href="order.php">DISHES</a>
-            <a href="history.php">BILL</a>
+            <!-- <a href="history.php">BILL</a> -->
             <div class="dropdown">
                 <a href="#" class="user-btn"><?php echo htmlspecialchars($userName); ?></a>
                 <div class="dropdown-content">
@@ -119,14 +119,17 @@ foreach ($_SESSION['cart'] as $item) {
     </div>
 
     <!-- Hiển thị danh sách món ăn -->
-    <div class="container">
-        <?php while($row = $result->fetch_assoc()): ?>
-        <div class="item">
-            <img src="<?php echo htmlspecialchars($row['image_path']); ?>" alt="Food Image" width="200">
-            <h3><?php echo htmlspecialchars($row['dish_name']); ?> <span class="price">$<?php echo htmlspecialchars($row['price']); ?></span></h3>
-            <p><?php echo htmlspecialchars($row['dish_describe']); ?></p>
+    <div class="container-a">
+        <div class="container">
+            <?php while($row = $result->fetch_assoc()): ?>
+            <div class="item">
+                <img src="<?php echo htmlspecialchars($row['image_path']); ?>" alt="Food Image" width="200">
+            
+                <h3><?php echo htmlspecialchars($row['dish_name']); ?> <p></p> <span style="font-weight: bold;">Price: </span>  <span class="price"><?php echo htmlspecialchars($row['price']); ?> VNĐ</span></h3>
+                <p> <span style="font-weight: bold; color: black;">Describe: </span> <?php echo htmlspecialchars($row['dish_describe']); ?></p>
+            </div>
+            <?php endwhile; ?>
         </div>
-        <?php endwhile; ?>
     </div>
 </body>
 </html>
