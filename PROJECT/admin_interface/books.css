@@ -72,6 +72,11 @@ body::before {
     color: #fff;
 }
 
+.sidebar ul li:nth-child(5) a {
+    background-color: #ff9900;
+    color: #fff;
+}
+
 /* Main Content Styles */
 .main-content {
     margin-left: 250px;
@@ -103,12 +108,9 @@ body::before {
 }
 
 .navbar a:hover {
-    color: #2980b9;
+    color: #ff9900;
 }
 
-.bookings-section h2 {
-    margin: 20px 0;
-}
 
 form {
     margin-bottom: 20px;
@@ -137,19 +139,24 @@ form button:hover {
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    border-radius: 8px; /* Round corners for table */
+    overflow: hidden; /* To hide overflow for rounded corners */
 }
-
 table th, table td {
-    border: 1px solid #ddd;
-    padding: 10px;
+    padding: 12px;
     text-align: left;
+    border: 1px solid #ddd;
 }
 
 table th {
-    background-color: #343a40;
+    background-color: #ff9900;
     color: white;
+    font-weight: bold;
 }
+
 
 table tr:nth-child(even) {
     background-color: #f9f9f9;
@@ -177,13 +184,49 @@ table tr:hover {
 
 /* Bookings Section Styles */
 .bookings-section {
-    margin-top: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    max-width: 100%;
+    margin: 0 auto;
 }
 
 .bookings-section h2 {
+    color: #ff9900;
     font-size: 24px;
+    text-align: center;
     margin-bottom: 20px;
 }
+
+/* Search form styling */
+.bookings-section form {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+.bookings-section form input[type="text"] {
+    padding: 8px;
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.bookings-section form button {
+    padding: 8px 15px;
+    background-color: #ff9900;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.bookings-section form button:hover {
+    background-color: #e68a00;
+}
+
 
 /* Table Styles */
 table {
@@ -192,6 +235,10 @@ table {
     margin-top: 20px;
 }
 
+.bookings-section table thead {
+    background-color: #ff9900;
+    color: #fff;
+}
 th, td {
     padding: 10px;
     text-align: left;

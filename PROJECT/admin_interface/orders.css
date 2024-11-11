@@ -75,6 +75,10 @@ body::before {
     color: #fff;
 }
 
+.sidebar ul li:nth-child(3) a {
+    background-color: #ff9900;
+    color: #fff;
+}
 /* Main Content Styles */
 .main-content {
     margin-left: 250px;
@@ -106,7 +110,7 @@ body::before {
 }
 
 .navbar a:hover {
-    color: #2980b9;
+    color: #ff9900;
 }
 
 .user-btn {
@@ -283,59 +287,110 @@ td {
     z-index: 1000;
 }
 
-/* Orders Section Styles */
+/* Center the .orders-section and add padding */
 .orders-section {
-    margin-top: 20px;
+    width: 100%;
+    margin: 0 auto;
     padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    text-align: center;
 }
 
+/* Style the main heading */
 .orders-section h2 {
-    font-size: 24px;
-    color: #333;
+    font-size: 30px;
+    color: #ff9900;
     margin-bottom: 20px;
     border-bottom: 2px solid #ff9900;
-    padding-bottom: 8px;
+    display: inline-block;
+    padding-bottom: 5px;
 }
 
-/* Form Styles */
+/* Style the search form */
 .orders-section form {
     display: flex;
+    justify-content: center;
     gap: 10px;
-    align-items: center;
+    margin-bottom: 20px;
 }
 
 .orders-section form input[type="text"] {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
+    padding: 8px;
     width: 250px;
-    transition: border-color 0.3s ease;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
-.orders-section form input[type="text"]:focus {
-    border-color: #ff9900;
-    outline: none;
-    box-shadow: 0 0 5px rgba(255, 153, 0, 0.3);
-}
-
-.orders-section form button[type="submit"] {
-    background-color: #2980b9;
-    color: white;
+.orders-section form button {
+    padding: 8px 15px;
+    background-color: #ff9900;
+    color: #fff;
     border: none;
-    padding: 10px 20px;
-    font-size: 16px;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    transition: background-color 0.3s;
 }
 
-.orders-section form button[type="submit"]:hover {
+.orders-section form button:hover {
+    background-color: #e68a00;
+}
+
+/* Subheadings for different sections */
+.orders-section h3 {
+    font-size: 24px;
+    color: #333;
+    margin-top: 20px;
+    color: #ff9900;
+}
+
+/* Table styling */
+.orders-section table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    text-align: left;
+    border-radius: 8px; /* Round corners for table */
+    overflow: hidden; /* To hide overflow for rounded corners */
+}
+
+.orders-section table th, .orders-section table td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+.orders-section table th {
     background-color: #ff9900;
-    transform: translateY(-2px);
+    color: #fff;
+    font-weight: bold;
+}
+
+.orders-section table td {
+    color: #333;
+}
+
+/* Center-align cell content for numbers */
+.orders-section table th:nth-child(2), .orders-section table td:nth-child(2),
+.orders-section table th:nth-child(3), .orders-section table td:nth-child(3),
+.orders-section table th:nth-child(5), .orders-section table td:nth-child(5),
+.orders-section table th:nth-child(7), .orders-section table td:nth-child(7),
+.orders-section table th:nth-child(8), .orders-section table td:nth-child(8) {
+    text-align: center;
+}
+
+/* Style for links or buttons within the Actions column */
+.orders-section table td a, .orders-section table td button {
+    color: #ff9900;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.orders-section table td a:hover, .orders-section table td button:hover {
+    text-decoration: underline;
+}
+
+/* Style for messages or order details */
+.orders-section p {
+    font-size: 16px;
+    color: #666;
 }
 .dropdown {
     position: relative;

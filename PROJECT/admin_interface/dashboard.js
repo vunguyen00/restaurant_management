@@ -160,7 +160,7 @@ selectedDishesList.innerHTML = ''; // Clear current content
 
 dishes.forEach(dish => {
     var li = document.createElement('li');
-    li.textContent = dish.dish_name + ' (Quantity: ' + dish.quantity + ', Price: $' + dish.price + ')';
+    li.textContent = dish.dish_name + ' (Quantity: ' + dish.quantity + ', Price: ' + dish.price + ' VNĐ' + ')';
 
     // Add remove button
     var removeButton = document.createElement('button');
@@ -248,21 +248,25 @@ fetch('checkout.php', {
 
 }
 
+
+
+// receipt
 function generateReceipt(dishes) {
-var receiptList = document.getElementById("receiptList");
-var totalAmount = document.getElementById("totalAmount");
-receiptList.innerHTML = '';
-let total = 0;
-dishes.forEach(dish => {
-var li = document.createElement('li');
-var dishTotal = dish.quantity * dish.price;
-li.textContent = dish.dish_name + ' x' + dish.quantity + ' = $' + dishTotal.toFixed(2);
-receiptList.appendChild(li);
-total += dishTotal;
-});
-totalAmount.textContent = '$' + total.toFixed(2);
-receiptModal.style.display = "block";
+    var receiptList = document.getElementById("receiptList");
+    var totalAmount = document.getElementById("totalAmount");
+    receiptList.innerHTML = '';
+    let total = 0;
+    dishes.forEach(dish => {
+        var li = document.createElement('li');
+        var dishTotal = dish.quantity * dish.price;
+        li.textContent = dish.dish_name + ' x' + dish.quantity + ' = ' + dishTotal.toFixed(2) + ' VNĐ';
+        receiptList.appendChild(li);
+        total += dishTotal;
+    });
+    totalAmount.textContent = total.toFixed(2) + ' VNĐ';
+    receiptModal.style.display = "block";
 }
+
 document.addEventListener('DOMContentLoaded', function () {
 var userBtn = document.querySelector('.user-btn');
 var dropdownContent = document.querySelector('.dropdown-content');

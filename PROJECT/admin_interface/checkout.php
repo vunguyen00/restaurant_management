@@ -133,51 +133,104 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['table_id'])) {
 
         // Hiển thị hóa đơn dưới dạng HTML
         echo '<html>
-                <head>
-                    <title>Hóa Đơn</title>
-                    <style>
-                        body { font-family: Arial, sans-serif; }
-                        .bill { width: 60%; margin: auto; }
-                        .bill h2 { text-align: center; }
-                        .bill table { width: 100%; border-collapse: collapse; }
-                        .bill table, .bill th, .bill td { border: 1px solid black; }
-                        .bill th, .bill td { padding: 8px; text-align: left; }
-                    </style>
-                </head>
-                <body>
-                    <div class="bill">
-                        <h2>Hóa Đơn</h2>
-                        <p><strong>Mã Đơn Hàng:</strong> ' . $order_id . '</p>
-                        <p><strong>Ca thanh toán:</strong> ' . $userName . '</p>
-                        <p><strong>Tên Khách Hàng:</strong> ' . $customer_name . '</p>
-                        <p><strong>Số Điện Thoại:</strong> ' . $customer_phone . '</p>
-                        <p><strong>Tổng Tiền:</strong> $' . number_format($total_price, 2) . '</p>
-                        <h3>Món ăn:</h3>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Tên Món</th>
-                                    <th>Số Lượng</th>
-                                    <th>Giá</th>
-                                </tr>
-                            </thead>
-                            <tbody>';
+        <head>
+            <title>Hóa Đơn</title>
+            <style>
+    
+                .bill {
+                    width: 60%;
+                    margin: 50px auto;
+                    padding: 20px;
+                    background-color: #ffffff;
+                    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+                    border-radius: 8px;
+                }
+                .bill h2 {
+                    text-align: center;
+                    font-size: 24px;
+                    color: #ff9900;
+                    margin-bottom: 20px;
+                }
+                .bill p {
+                    font-size: 16px;
+                    margin: 10px 0;
+                }
+                .bill table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-top: 20px;
+                    font-family: Arial, sans-serif;
+                    background-color: #f8f9fa;
+                    border-radius: 8px; /* Round corners for table */
+                    overflow: hidden; /* To hide overflow for rounded corners */
+                }
+                .bill th, .bill td {
+                    padding: 12px;
+                    text-align: left;
+                    border: 1px solid #ddd;
+                }           
+                .bill table th {
+                    background-color: #ff9900;
+                    color: white;
+                    font-weight: bold;
+                }
+                .bill td {
+                    padding: 10px;
+                    text-align: left;
+                    font-size: 15px;
+                    color: #555;
+                }
+                .bill button {
+                    margin-top: 20px;
+                    padding: 10px 20px;
+                    background-color: #ff9900;
+                    color: white;
+                    border: none;
+                    border-radius: 5px;
+                    font-size: 16px;
+                    cursor: pointer;
+                }
+                .bill button:hover {
+                    background-color: #e68a00;
+                }
+            </style>
 
-        foreach ($order_items as $item) {
-            echo '<tr>
-                    <td>' . $item['dish_name'] . '</td>
-                    <td>' . $item['quantity'] . '</td>
-                    <td>$' . number_format($item['price'], 2) . '</td>
-                </tr>';
-        }
-
-        echo '          </tbody>
-                        </table>
-                        <button onclick="window.print();">In Hóa Đơn</button>
-                        <button onclick="window.location.href=\'admin.php\';">Quay lại Admin</button>
-                    </div>
-                </body>
-            </html>';
+        </head>
+        <body>
+            <div class="bill">
+                <h2>Hóa Đơn</h2>
+                <p><strong>Mã Đơn Hàng:</strong> ' . $order_id . '</p>
+                <p><strong>Ca thanh toán:</strong> ' . $userName . '</p>
+                <p><strong>Tên Khách Hàng:</strong> ' . $customer_name . '</p>
+                <p><strong>Số Điện Thoại:</strong> ' . $customer_phone . '</p>
+                <p><strong>Tổng Tiền:</strong> ' . number_format($total_price, 2) . ' VNĐ</p>
+                <h3>Món ăn:</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tên Món</th>
+                            <th>Số Lượng</th>
+                            <th>Giá</th>
+                        </tr>
+                    </thead>
+                    <tbody>';
+    
+    foreach ($order_items as $item) {
+        echo '<tr>
+                <td>' . htmlspecialchars($item['dish_name']) . '</td>
+                <td>' . htmlspecialchars($item['quantity']) . '</td>
+                <td>' . number_format($item['price'], 2) . ' VNĐ</td>
+            </tr>';
+    }
+    
+    echo '      </tbody>
+                </table>
+                <button onclick="window.print();">In Hóa Đơn</button>
+                <button onclick="window.location.href=\'admin.php\';">Quay lại Admin</button>
+            </div>
+        </body>
+    </html>';
+    
     } catch (Exception $e) {
         $mysqli->rollback();
         error_log("Transaction failed: " . $e->getMessage());

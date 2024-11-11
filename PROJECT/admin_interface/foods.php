@@ -48,6 +48,7 @@ $menuResult = $results['menu'];
             <li><a href="foods.php">Foods</a></li>
             <li><a href="books.php">Bookings</a></li>
             <li><a href="statistics.php" class="button">Revenue & Dish Statistics</a></li>
+            <li><a href="statistical.php">Revenue Statistics</a></li>
         </ul>
     </div>
 
@@ -55,7 +56,7 @@ $menuResult = $results['menu'];
         <div class="navbar">
             <a href="#">Home</a>
             <div class="dropdown">
-                <button id="userBtn" class="user-btn" style="color:orange"><?php echo htmlspecialchars($userName); ?></button>
+            <a href="#" class="user-btn"><?php echo htmlspecialchars($userName); ?></a>
                 <div class="dropdown-content">
                     <a href="logout.php">Log Out</a>
                 </div>
@@ -64,6 +65,7 @@ $menuResult = $results['menu'];
 
         <div class="foods-section">
             <h2>Foods</h2>
+            <p></p>
             <button class="create-btn" id="openAddFoodModal">Add Food</button>
             <div id="addFoodModal" class="modal">
                 <div class="modal-content">
@@ -125,7 +127,7 @@ $menuResult = $results['menu'];
                                 <td><?php echo htmlspecialchars($row['dish_id']); ?></td>
                                 <td><img src="<?php echo htmlspecialchars($row['image_path']); ?>" alt="Food Image" width="200"></td>
                                 <td><?php echo htmlspecialchars($row['dish_name']); ?></td>
-                                <td>$<?php echo htmlspecialchars($row['price']); ?></td>
+                                <td><?php echo htmlspecialchars($row['price']); ?> VNĐ</td>
                                 <td><?php echo htmlspecialchars($row['dish_describe']); ?></td>
                                 <td><button class="update-btn" data-id="<?php echo htmlspecialchars($row['dish_id']); ?>" data-name="<?php echo htmlspecialchars($row['dish_name']); ?>" data-price="<?php echo htmlspecialchars($row['price']); ?>" data-description="<?php echo htmlspecialchars($row['dish_describe']); ?>">Update</button></td>
                                 <td><button class="delete-btn" data-id="<?php echo htmlspecialchars($row['dish_id']); ?>">Delete</button></td>

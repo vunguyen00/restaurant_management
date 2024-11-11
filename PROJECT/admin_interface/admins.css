@@ -74,6 +74,10 @@ body::before {
     background-color: #ff9900;
     color: #fff;
 }
+.sidebar ul li:nth-child(2) a {
+    background-color: #ff9900;
+    color: #fff;
+}
 
 /* Main Content Styles */
 .main-content {
@@ -106,7 +110,7 @@ body::before {
 }
 
 .navbar a:hover {
-    color: #2980b9;
+    color: #ff9900;
 }
 
 /* Button Styles */
@@ -249,4 +253,87 @@ table th {
 .user-btn:hover {
     background-color: #2980b9;
     color: white;
+}
+
+/* Center the .container and add padding */
+.container {
+    width: 100%;
+    margin: 0 auto; /* Center the container */
+    padding: 20px;
+    text-align: center;
+}
+
+/* Style the heading */
+.container h3 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+    color: #ff9900;
+    border-bottom: 2px solid #ff9900;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+/* Style the search form */
+.search-form {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.search-form input[type="text"] {
+    padding: 8px;
+    width: 250px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.search-form .btn {
+    padding: 8px 15px;
+    background-color: #ff9900;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-bottom: 8px;
+}
+
+.search-form .btn:hover {
+    background-color: #e68a00;
+}
+
+/* Style the table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    text-align: left;
+}
+
+table th, table td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+table th {
+    background-color: #ff9900;
+    color: #fff;
+}
+
+table td {
+    color: #333;
+}
+
+/* Style for actions column links or buttons */
+table td a, table td button {
+    color: #ff9900;
+    text-decoration: none;
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+table td a:hover, table td button:hover {
+    text-decoration: underline;
 }

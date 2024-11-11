@@ -36,6 +36,7 @@ if (isset($_SESSION['user_name'])) {
             <li><a href="foods.php">Foods</a></li>
             <li><a href="books.php">Bookings</a></li>
             <li><a href="statistics.php" class="button">Revenue & Dish Statistics</a></li>
+            <li><a href="statistical.php">Revenue Statistics</a></li>
         </ul>
     </div>
 
@@ -43,7 +44,7 @@ if (isset($_SESSION['user_name'])) {
         <div class="navbar">
             <a href="#">Home</a>
             <div class="dropdown">
-                <button id="userBtn" class="user-btn" style="color:orange"><?php echo htmlspecialchars($userName); ?></button>
+            <a href="#" class="user-btn"><?php echo htmlspecialchars($userName); ?></a>
                 <div class="dropdown-content">
                     <a href="logout.php">Log Out</a>
                 </div>

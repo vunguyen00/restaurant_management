@@ -120,6 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['order_id'])) {
             <li><a href="foods.php">Foods</a></li>
             <li><a href="books.php">Bookings</a></li>
             <li><a href="statistics.php" class="button">Revenue & Dish Statistics</a></li>
+            <li><a href="statistical.php">Revenue Statistics</a></li>
         </ul>
     </div>
 
@@ -127,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['order_id'])) {
         <div class="navbar">
             <a href="#">Home</a>
             <div class="dropdown">
-                <button id="userBtn" class="user-btn" style="color:orange"><?php echo htmlspecialchars($userName); ?></button>
+            <a href="#" class="user-btn"><?php echo htmlspecialchars($userName); ?></a>
                 <div class="dropdown-content">
                     <a href="logout.php">Log Out</a>
                 </div>
@@ -150,7 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['order_id'])) {
                 <p>Table Number: <?php echo htmlspecialchars($searchResult['table_number']); ?></p> <!-- Hiển thị số bàn -->
                 <p>Order Date: <?php echo htmlspecialchars($searchResult['order_date']); ?></p>
                 <p>Payment Time: <?php echo htmlspecialchars($searchResult['payment_time']); ?></p> <!-- Thêm thời gian thanh toán -->
-                <p>Total Price: $<?php echo number_format($searchResult['total_price'], 2); ?></p>
+                <p>Total Price: <?php echo number_format($searchResult['total_price'], 2); ?> VNĐ</p>
 
                 <table>
                     <thead>
@@ -166,7 +167,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['order_id'])) {
                             <tr>
                                 <td><?php echo htmlspecialchars($item['dish_name']); ?></td>
                                 <td><?php echo htmlspecialchars($item['quantity']); ?></td>
-                                <td>$<?php echo number_format($item['price'], 2); ?></td>
+                                <td><?php echo number_format($item['price'], 2); ?>VNĐ</td>
                             </tr>
                             <?php endforeach; ?>
                         <?php else: ?>
@@ -202,7 +203,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['order_id'])) {
                                 <td><?php echo htmlspecialchars($order['table_number']); ?></td> <!-- Hiển thị số bàn -->
                                 <td><?php echo htmlspecialchars($order['order_date']); ?></td>
                                 <td><?php echo htmlspecialchars($order['payment_time']); ?></td> <!-- Hiển thị thời gian thanh toán -->
-                                <td>$<?php echo number_format($order['total_price'], 2); ?></td>
+                                <td><?php echo number_format($order['total_price'], ); ?> VNĐ</td>
                             </tr>
                             <?php endforeach; ?>
                         </tbody>

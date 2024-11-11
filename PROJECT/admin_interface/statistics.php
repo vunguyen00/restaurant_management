@@ -107,6 +107,7 @@ if (isset($_POST['export_excel'])) {
             <li><a href="foods.php">Foods</a></li>
             <li><a href="books.php">Bookings</a></li>
             <li><a href="statistics.php" class="button">Revenue & Dish Statistics</a></li>
+            <li><a href="statistical.php">Revenue Statistics</a></li>
         </ul>
     </div>
 
@@ -114,7 +115,7 @@ if (isset($_POST['export_excel'])) {
         <div class="navbar">
             <a href="#">Home</a>
             <div class="dropdown">
-                <button id="userBtn" class="user-btn" style="color:orange"><?php echo htmlspecialchars($userName); ?></button>
+            <a href="#" class="user-btn"><?php echo htmlspecialchars($userName); ?></a>
                 <div class="dropdown-content">
                     <a href="logout.php">Log Out</a>
                 </div>
@@ -149,7 +150,7 @@ if (isset($_POST['export_excel'])) {
                             <td></td>
                             <td><?php echo htmlspecialchars($dish['dish_name']); ?></td>
                             <td><?php echo htmlspecialchars($dish['total_quantity']); ?></td>
-                            <td>$<?php echo number_format($dish['total_revenue'], 2); ?></td>
+                            <td><?php echo number_format($dish['total_revenue'], 2); ?> VNĐ</td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

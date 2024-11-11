@@ -74,6 +74,11 @@ body::before {
     color: #fff;
 }
 
+.sidebar ul li:nth-child(4) a {
+    background-color: #ff9900;
+    color: #fff;
+}
+
 .main-content {
     margin-left: 250px;
     padding: 20px;
@@ -104,7 +109,7 @@ body::before {
 }
 
 .navbar a:hover {
-    color: #2980b9;
+    color: #ff9900;
 }
 
 .user-btn {
@@ -124,20 +129,22 @@ body::before {
 }
 
 /* Button Styles */
+/* Style the "Add Food" button */
 .create-btn {
-    background-color: #2980b9;
-    color: white;
+    float: right;
+    padding: 10px 20px;
+    background-color: #ff9900;
+    color: #fff;
     border: none;
-    padding: 12px 20px;
-    font-size: 16px;
     border-radius: 5px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
     cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 16px;
+    margin-bottom: 20px;
 }
 
 .create-btn:hover {
-    background-color: #ff9900;
-    transform: translateY(-2px);
+    background-color: #e68a00;
 }
 
 /* Responsive Design */
@@ -232,14 +239,22 @@ tr:hover {
 .modal {
     display: none;
     position: fixed;
-    z-index: 1000;
+    z-index: 100;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
 }
+.modal h2 {
+    color: #ff9900;
+    margin-bottom: 20px;
+    font-size: 24px;
+    text-align: center;
+}
+
 
 /* Modal container */
 #addFoodModal {
@@ -256,13 +271,13 @@ tr:hover {
 /* Modal content */
 .modal-content {
     background-color: #fff;
-    margin: 5% auto; /* Center the modal */
     padding: 20px;
-    border: 1px solid #888;
-    width: 450px; /* Width of modal */
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    width: 400px;
     position: relative;
+    text-align: left;
+    margin: 5% auto; /* Center the modal */
+    
 }
 
 /* Close button */
@@ -303,43 +318,63 @@ tr:hover {
 
 /* Label styling */
 .modal-content label {
-    display: block;
     font-weight: bold;
     margin-top: 10px;
+    display: block;
 }
 
-/* Input and textarea styling */
 .modal-content input[type="text"],
 .modal-content input[type="number"],
-.modal-content textarea {
+.modal-content textarea,
+.modal-content input[type="file"] {
     width: 100%;
     padding: 8px;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    border-radius: 4px;
     margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
-
-.modal-content textarea {
-    resize: vertical;
-    min-height: 60px;
-}
-
-/* Submit button styling */
-button[type="submit"] {
-    background-color: #2980b9;
-    color: white;
+.modal-content button {
     padding: 10px 20px;
+    background-color: #ff9900;
+    color: #fff;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
-    margin-top: 15px;
     width: 100%;
+    transition: background-color 0.3s;
 }
 
-button[type="submit"]:hover {
-    background-color: #ff9900;
+.modal-content button:hover {
+    background-color: #e68a00;
+}
+/* Close button for modal */
+.modal .close-add-food,
+.modal .close-update {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    color: #333;
+    cursor: pointer;
+}
+
+.modal .close-add-food:hover,
+.modal .close-update:hover {
+    color: #ff9900;
+}
+
+/* Update/Delete button styling within the table */
+.foods-section table td a, .foods-section table td button {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.foods-section table td a:hover, .foods-section table td button:hover {
+    text-decoration: underline;
 }
 
 
@@ -400,4 +435,60 @@ button[type="submit"]:hover {
 .user-btn:hover {
     background-color: #2980b9;
     color: white;
+}
+
+/* Center the .foods-section and add padding */
+.foods-section {
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Style the main heading */
+.foods-section h2 {
+    font-size: 30px;
+    color: #ff9900;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ff9900;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+/* Table styling */
+.foods-section table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    text-align: left;
+}
+
+.foods-section table th, .foods-section table td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    vertical-align: middle;
+}
+
+.foods-section table th {
+    background-color: #ff9900;
+    color: #fff;
+    font-weight: bold;
+}
+
+.foods-section table td {
+    color: #333;
+}
+
+.foods-section table td img {
+    width: 60px;
+    height: auto;
+    border-radius: 5px;
+}
+
+/* Center-align text in specific columns */
+.foods-section table th:nth-child(1), .foods-section table td:nth-child(1),
+.foods-section table th:nth-child(4), .foods-section table td:nth-child(4),
+.foods-section table th:nth-child(6), .foods-section table td:nth-child(6),
+.foods-section table th:nth-child(7), .foods-section table td:nth-child(7) {
+    text-align: center;
 }

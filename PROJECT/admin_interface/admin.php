@@ -63,6 +63,7 @@ if ($userResult->num_rows > 0) {
             <li><a href="foods.php">Foods</a></li>
             <li><a href="books.php">Bookings</a></li>
             <li><a href="statistics.php" class="button">Revenue & Dish Statistics</a></li>
+            <li><a href="statistical.php">Revenue Statistics</a></li>
         </ul>
     </div>
 
@@ -105,11 +106,14 @@ if ($userResult->num_rows > 0) {
                 <div id="receiptModal" class="modal">
                     <div class="modal-content">
                         <span class="close" id="closeReceiptModal">&times;</span>
-                        <h3>Receipt</h3>
+                        <h3 style="
+                                    text-align: center;
+                                    margin-bottom: 20px; color: #ff9900">Receipt</h3>
                         <ul id="receiptList"></ul>
                         <p>Total: <span id="totalAmount"></span></p>
                         
-                        <h4>Customer Information</h4>
+                        <h4 style="margin-top: 20px;
+                                    font-size: 1.2em;">Customer Information</h4>
                         <label for="customer_name">Name:</label>
                         <input type="text" id="customer_name" placeholder="Enter customer name" required>
                         <p></p>
@@ -171,14 +175,19 @@ if ($userResult->num_rows > 0) {
                 <?php if ($menuResult->num_rows > 0): ?>
                     <?php while ($dish = $menuResult->fetch_assoc()): ?>
                         <div class="menu-item">
-                            <img src="<?php echo htmlspecialchars($dish['image_path']); ?>" alt="Food Image" width="100">
-                            <label>
-                                <input type="checkbox" name="dishes[]" value="<?php echo htmlspecialchars($dish['dish_id']); ?>">
-                                <?php echo htmlspecialchars($dish['dish_name']); ?>
-                            </label>
-                            <h3>Mô tả món ăn:<?php echo htmlspecialchars($dish['dish_describe']); ?></h3>
-                            <input type="number" name="quantities[<?php echo htmlspecialchars($dish['dish_id']); ?>]" min="1" value="1" style="width: 60px;">
-                        </div>
+                            <div style="display:flex;">
+                                <img src="<?php echo htmlspecialchars($dish['image_path']); ?>" alt="Food Image" width="100">
+                                <div style="margin-left: 15px;">   
+                                    <label>
+                                        <input type="checkbox" name="dishes[]" value="<?php echo htmlspecialchars($dish['dish_id']); ?>">
+                                        <?php echo htmlspecialchars($dish['dish_name']); ?>
+                                    </label>
+                                    <h3>Mô tả món ăn: <span style="font-weight: normal;"><?php echo htmlspecialchars($dish['dish_describe']); ?></span></h3>
+
+                                    <h3>Số lượng: <input type="number" name="quantities[<?php echo htmlspecialchars($dish['dish_id']); ?>]" min="1" value="1" style="width: 60px;">
+                                    </div></h3>
+                                </div>
+                            </div>
                     <?php endwhile; ?>
                 <?php else: ?>
                     <p>No dishes found.</p>
