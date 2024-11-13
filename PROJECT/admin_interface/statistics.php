@@ -16,25 +16,38 @@ if (isset($_SESSION['user_name'])) {
 } else {
     $userName = "USER"; 
 }
+
 // Import PhpSpreadsheet classes
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-// Kiểm tra xem người dùng đã đăng nhập chưa
-if (!isset($_SESSION['user_name']) || !isset($_SESSION['user_id'])) {
-    header("Location: ../login.php");
-    exit();
+// Set default values
+$totalRevenue = 0;
+$dishStats = [];
+
+// Check if filter is set and apply accordingly
+if (isset($_POST['filter_submit'])) {
+    $dateFilter = $_POST['date_filter'];
+    $selectedDate = $_POST['selected_date'];
+    
+    if ($dateFilter == 'day') {
+        $sql = "SELECT SUM(total_price) AS total_revenue FROM orders WHERE DATE(order_date) = '$selectedDate'";
+    } elseif ($dateFilter == 'month') {
+        $month = date('m', strtotime($selectedDate));
+        $year = date('Y', strtotime($selectedDate));
+        $sql = "SELECT SUM(total_price) AS total_revenue FROM orders WHERE MONTH(order_date) = '$month' AND YEAR(order_date) = '$year'";
+    } elseif ($dateFilter == 'year') {
+        $year = date('Y', strtotime($selectedDate));
+        $sql = "SELECT SUM(total_price) AS total_revenue FROM orders WHERE YEAR(order_date) = '$year'";
+    } else {
+        $sql = "SELECT SUM(total_price) AS total_revenue FROM orders"; // No filter
+    }
+} else {
+    $sql = "SELECT SUM(total_price) AS total_revenue FROM orders"; // Default without filter
 }
 
-// Lấy thông tin người dùng
-$userName = $_SESSION['user_name'];
-$datePaid = date('Y-m-d'); // Ngày thanh toán
-$timePaid = date('H:i:s'); // Giờ thanh toán
-
-// Fetch total revenue
-$sql = "SELECT SUM(total_price) AS total_revenue FROM orders";
+// Execute SQL query for revenue
 $result = $mysqli->query($sql);
-$totalRevenue = 0;
 if ($result) {
     $row = $result->fetch_assoc();
     $totalRevenue = $row['total_revenue'];
@@ -46,7 +59,6 @@ $sql = "SELECT oi.dish_name, SUM(oi.quantity) AS total_quantity, SUM(oi.price * 
         GROUP BY oi.dish_name";
 $result = $mysqli->query($sql);
 
-$dishStats = [];
 if ($result) {
     while ($row = $result->fetch_assoc()) {
         $dishStats[] = $row;
@@ -62,7 +74,7 @@ if (isset($_POST['export_excel'])) {
 
     // Add header for total revenue
     $sheet->setCellValue('A1', 'Total Revenue');
-    $sheet->setCellValue('B1', '$' . number_format($totalRevenue, 2));
+    $sheet->setCellValue('B1', number_format($totalRevenue) . ' VNĐ');
 
     // Add headers for dish statistics
     $sheet->setCellValue('A3', 'Dish Name');
@@ -74,7 +86,7 @@ if (isset($_POST['export_excel'])) {
     foreach ($dishStats as $dish) {
         $sheet->setCellValue('A' . $rowNum, $dish['dish_name']);
         $sheet->setCellValue('B' . $rowNum, $dish['total_quantity']);
-        $sheet->setCellValue('C' . $rowNum, '$' . number_format($dish['total_revenue'], 2));
+        $sheet->setCellValue('C' . $rowNum, number_format($dish['total_revenue']) . ' VNĐ');
         $rowNum++;
     }
 
@@ -125,20 +137,26 @@ if (isset($_POST['export_excel'])) {
         <div class="statistics-section">
             <h2>Revenue & Dish Statistics</h2>
 
-            <!-- Total Revenue -->
-            <p><strong>Total Revenue: </strong>$<?php echo number_format($totalRevenue, 2); ?></p>
+            <!-- Date Filter Form -->
+            <form method="POST" action="">
+                <label for="date-filter">Filter By:</label>
+                <select name="date_filter" id="date-filter">
+                    <option value="day">Day</option>
+                    <option value="month">Month</option>
+                    <option value="year">Year</option>
+                </select>
+                <input type="date" name="selected_date" required>
+                <button type="submit" name="filter_submit">Filter</button>
+            </form>
 
-            <!-- User Payment Info -->
-            <p><strong>Payer Name: </strong><?php echo htmlspecialchars($userName); ?></p>
-            <p><strong>Date of Payment: </strong><?php echo $datePaid; ?></p>
-            <p><strong>Time of Payment: </strong><?php echo $timePaid; ?></p>
+            <!-- Display Total Revenue -->
+            <p><strong>Total Revenue (Filtered): </strong><?php echo number_format($totalRevenue); ?> VNĐ</p>
 
             <!-- Dish Statistics -->
             <h3>Dish Sales and Revenue</h3>
             <table>
                 <thead>
                     <tr>
-                        <th>Manage</th>
                         <th>Dish Name</th>
                         <th>Total Quantity Sold</th>
                         <th>Total Revenue</th>
@@ -147,30 +165,13 @@ if (isset($_POST['export_excel'])) {
                 <tbody>
                     <?php foreach ($dishStats as $dish): ?>
                         <tr>
-                            <td></td>
                             <td><?php echo htmlspecialchars($dish['dish_name']); ?></td>
                             <td><?php echo htmlspecialchars($dish['total_quantity']); ?></td>
-                            <td><?php echo number_format($dish['total_revenue'], 2); ?> VNĐ</td>
+                            <td><?php echo number_format($dish['total_revenue']); ?> VNĐ</td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
-            <script>
-                // JavaScript for the dropdown
-                var userBtn = document.getElementById('userBtn');
-                var dropdownContent = document.querySelector('.dropdown-content');
-
-                userBtn.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
-                });
-
-                window.addEventListener('click', function (e) {
-                    if (!userBtn.contains(e.target) && !dropdownContent.contains(e.target)) {
-                        dropdownContent.style.display = 'none';
-                    }
-                });
-            </script>
 
             <!-- Export to Excel -->
             <form method="POST" action="">
