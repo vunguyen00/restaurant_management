@@ -89,17 +89,28 @@ while ($row = $result->fetch_assoc()) {
                 </select>
             </form>
 
-            <canvas id="revenueChart" width="400" height="200"></canvas>
+            <h3 style="color: #ff9900;">Revenue Bar Chart</h3>
+            <canvas id="revenueBarChart" width="400" height="200"></canvas>
+
+            <!-- Line Chart Heading and Canvas -->
+            <h3 style="color: #ff9900;">Revenue Line Chart</h3>
+            <canvas id="revenueLineChart" width="400" height="200"></canvas>
+
+            <!-- Pie Chart Heading and Canvas with Smaller Size -->
+            <h3 style="color: #ff9900;">Revenue Distribution Pie Chart</h3>
+            <canvas id="revenuePieChart" width="300" height="200" style="max-width: 500px; max-height: 250px;"></canvas>
         </div>
     </div>
 
     <script>
+        // Extract data for charts
         const data = <?php echo json_encode($data); ?>;
         const labels = data.map(item => item.date);
         const revenues = data.map(item => item.revenue);
 
-        const ctx = document.getElementById('revenueChart').getContext('2d');
-        new Chart(ctx, {
+        // Bar Chart
+        const ctxBar = document.getElementById('revenueBarChart').getContext('2d');
+        new Chart(ctxBar, {
             type: 'bar',
             data: {
                 labels: labels,
@@ -116,7 +127,7 @@ while ($row = $result->fetch_assoc()) {
                     x: {
                         title: {
                             display: true,
-                            text: '<?php echo ucfirst($timeframe); ?>' // Display "Day", "Month", or "Year"
+                            text: '<?php echo ucfirst($timeframe); ?>'
                         },
                         ticks: {
                             callback: function(value, index, values) {
@@ -133,13 +144,92 @@ while ($row = $result->fetch_assoc()) {
                         },
                         ticks: {
                             callback: function(value) {
-                                return value.toLocaleString() + ' VNĐ'; // Format with thousands separator
+                                return value.toLocaleString() + ' VNĐ';
                             }
                         }
                     }
                 }
             }
         });
+
+        // Line Chart
+        const ctxLine = document.getElementById('revenueLineChart').getContext('2d');
+        new Chart(ctxLine, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Revenue (VNĐ)',
+                    data: revenues,
+                    backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    fill: true,
+                    borderWidth: 2,
+                    pointRadius: 3
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: '<?php echo ucfirst($timeframe); ?>'
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Revenue (VNĐ)'
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return value.toLocaleString() + ' VNĐ';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Pie Chart
+        const ctxPie = document.getElementById('revenuePieChart').getContext('2d');
+        new Chart(ctxPie, {
+            type: 'pie',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Revenue (VNĐ)',
+                    data: revenues,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'right'
+                    }
+                }
+            }
+        });
+
     </script>
 </body>
 </html>

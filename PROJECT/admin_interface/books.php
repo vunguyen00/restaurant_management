@@ -25,7 +25,7 @@ if (isset($_POST['search'])) {
 }
 
 // Truy vấn thông tin đặt bàn cùng với số điện thoại của người dùng
-$sql = "SELECT b.booking_id, u.user_name, u.phone_number, t.table_number, b.booking_time 
+$sql = "SELECT b.booking_id, u.user_name, u.phone_number, t.table_number, b.booking_time, special_request
         FROM booking_history b 
         JOIN user u ON b.user_id = u.user_id 
         JOIN restaurant_table t ON b.table_id = t.table_id";
@@ -92,6 +92,7 @@ if (!$result) {
                         <th>Phone Number</th>
                         <th>Table Number</th>
                         <th>Booking Time</th>
+                        <th>Special Request</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -102,6 +103,7 @@ if (!$result) {
                             <td><?php echo htmlspecialchars($row['phone_number']); ?></td>
                             <td><?php echo htmlspecialchars($row['table_number']); ?></td>
                             <td><?php echo htmlspecialchars($row['booking_time']); ?></td>
+                            <td><?php echo htmlspecialchars($row['special_request']); ?></td>
                         </tr>
                     <?php endwhile; ?>
                 </tbody>
