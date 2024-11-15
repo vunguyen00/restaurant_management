@@ -18,7 +18,7 @@ if (isset($_SESSION['user_name'])) {
 }
 
 $searchResult = []; // Biến lưu trữ kết quả tìm kiếm
-$orderId = ''; // Biến để lưu orderId tìm kiếm
+$customerName = ''; // Biến để lưu tên khách hàng tìm kiếm
 
 // Truy vấn để lấy tất cả đơn hàng đã thanh toán, bao gồm số bàn từ restaurant_table
 $sql = "SELECT o.order_id, o.total_price, o.order_date, o.payment_time, 
@@ -50,11 +50,11 @@ while ($row = $result->fetch_assoc()) {
     ];
 }
 
-// Kiểm tra nếu có yêu cầu tìm kiếm
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['order_id'])) {
-    $orderId = $_POST['order_id'];
+// Kiểm tra nếu có yêu cầu tìm kiếm theo tên khách hàng
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['customer_name'])) {
+    $customerName = $_POST['customer_name'];
 
-    // Truy vấn để lấy thông tin đơn hàng đã thanh toán dựa trên orderId, bao gồm số bàn
+    // Truy vấn để lấy thông tin đơn hàng đã thanh toán dựa trên tên khách hàng, bao gồm số bàn
     $sql = "SELECT o.order_id, o.total_price, o.order_date, o.payment_time, 
                    o.customer_name, u.user_name AS admin_user_name, 
                    o.customer_phone, 
@@ -64,14 +64,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['order_id'])) {
             LEFT JOIN user u ON o.user_id = u.user_id
             LEFT JOIN order_items oi ON o.order_id = oi.order_id
             LEFT JOIN restaurant_table rt ON o.table_id = rt.table_id
-            WHERE o.order_id = ? ";
+            WHERE o.customer_name LIKE ? ";
     $stmt = $mysqli->prepare($sql);
     
     if (!$stmt) {
         die("SQL preparation failed: " . $mysqli->error);
     }
 
-    $stmt->bind_param("i", $orderId); // orderId là kiểu số nguyên
+    $customerNameParam = "%" . $customerName . "%"; // Sử dụng dấu % để tìm kiếm tương đối
+    $stmt->bind_param("s", $customerNameParam); // customerName là kiểu chuỗi
     if (!$stmt->execute()) {
         die("Execution failed: " . $stmt->error); // Handle execution error
     }
@@ -102,6 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['order_id'])) {
 }
 ?>
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -128,7 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['order_id'])) {
         <div class="navbar">
             <a href="#">Home</a>
             <div class="dropdown">
-            <a href="#" class="user-btn"><?php echo htmlspecialchars($userName); ?></a>
+                <a href="#" class="user-btn"><?php echo htmlspecialchars($userName); ?></a>
                 <div class="dropdown-content">
                     <a href="logout.php">Log Out</a>
                 </div>
@@ -138,7 +140,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['order_id'])) {
         <div class="orders-section">
             <h2>Orders</h2>
             <form method="POST" action="">
-                <input type="text" name="order_id" placeholder="Enter Order ID" value="<?php echo htmlspecialchars($orderId); ?>" required>
+                <input type="text" name="customer_name" placeholder="Enter Customer Name" value="<?php echo htmlspecialchars($customerName); ?>" required>
                 <button type="submit">Search</button>
             </form>
 
@@ -147,10 +149,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['order_id'])) {
                 <h3>Order ID: <?php echo htmlspecialchars($searchResult['order_id']); ?></h3>
                 <p>Customer Name: <?php echo htmlspecialchars($searchResult['customer_name']); ?></p>
                 <p>Phone: <?php echo htmlspecialchars($searchResult['customer_phone']); ?></p>
-                <p>Ca: <?php echo htmlspecialchars($searchResult['admin_user_name']); ?></p> <!-- Hiển thị tên admin -->
-                <p>Table Number: <?php echo htmlspecialchars($searchResult['table_number']); ?></p> <!-- Hiển thị số bàn -->
+                <p>Ca: <?php echo htmlspecialchars($searchResult['admin_user_name']); ?></p>
+                <p>Table Number: <?php echo htmlspecialchars($searchResult['table_number']); ?></p>
                 <p>Order Date: <?php echo htmlspecialchars($searchResult['order_date']); ?></p>
-                <p>Payment Time: <?php echo htmlspecialchars($searchResult['payment_time']); ?></p> <!-- Thêm thời gian thanh toán -->
+                <p>Payment Time: <?php echo htmlspecialchars($searchResult['payment_time']); ?></p>
                 <p>Total Price: <?php echo number_format($searchResult['total_price'], 2); ?> VNĐ</p>
 
                 <table>
@@ -186,25 +188,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['order_id'])) {
                                 <th>Order ID</th>
                                 <th>Customer Name</th>
                                 <th>Phone Number</th>
-                                <th>Admin User Name</th> <!-- Thêm cột tên admin -->
-                                <th>Table Number</th> <!-- Thêm cột số bàn -->
+                                <th>Admin User Name</th>
+                                <th>Table Number</th>
                                 <th>Order Date</th>
-                                <th>Payment Time</th> <!-- Thêm cột thời gian thanh toán -->
+                                <th>Payment Time</th>
                                 <th>Total Price</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($paidOrders as $id => $order): ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars($id); ?></td>
-                                <td><?php echo htmlspecialchars($order['customer_name']); ?></td>
-                                <td><?php echo htmlspecialchars($order['customer_phone']); ?></td>
-                                <td><?php echo htmlspecialchars($order['admin_user_name']); ?></td> <!-- Hiển thị tên admin -->
-                                <td><?php echo htmlspecialchars($order['table_number']); ?></td> <!-- Hiển thị số bàn -->
-                                <td><?php echo htmlspecialchars($order['order_date']); ?></td>
-                                <td><?php echo htmlspecialchars($order['payment_time']); ?></td> <!-- Hiển thị thời gian thanh toán -->
-                                <td><?php echo number_format($order['total_price'], ); ?> VNĐ</td>
-                            </tr>
+                            <?php foreach ($paidOrders as $orderId => $order): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($orderId); ?></td>
+                                    <td><?php echo htmlspecialchars($order['customer_name']); ?></td>
+                                    <td><?php echo htmlspecialchars($order['customer_phone']); ?></td>
+                                    <td><?php echo htmlspecialchars($order['admin_user_name']); ?></td>
+                                    <td><?php echo htmlspecialchars($order['table_number']); ?></td>
+                                    <td><?php echo htmlspecialchars($order['order_date']); ?></td>
+                                    <td><?php echo htmlspecialchars($order['payment_time']); ?></td>
+                                    <td><?php echo number_format($order['total_price']); ?> VNĐ</td>
+                                </tr>
                             <?php endforeach; ?>
                         </tbody>
                     </table>
@@ -213,22 +215,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['order_id'])) {
                 <?php endif; ?>
             <?php endif; ?>
         </div>
-        <script>
-                    // JavaScript for the dropdown
-                    var userBtn = document.getElementById('userBtn');
-                    var dropdownContent = document.querySelector('.dropdown-content');
-
-                    userBtn.addEventListener('click', function (e) {
-                        e.preventDefault();
-                        dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
-                    });
-
-                    window.addEventListener('click', function (e) {
-                        if (!userBtn.contains(e.target) && !dropdownContent.contains(e.target)) {
-                            dropdownContent.style.display = 'none';
-                        }
-                    });
-                </script>
     </div>
 </body>
 </html>
