@@ -74,6 +74,7 @@ if ($userResult->num_rows > 0) {
                 <a href="#" class="user-btn"><?php echo htmlspecialchars($userName); ?></a>
                 <div class="dropdown-content">
                     <a href="logout.php">Log Out</a>
+                    <a href="../information.php">Information</a>
                 </div>
             </div>
         </div>

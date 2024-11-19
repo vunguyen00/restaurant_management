@@ -26,7 +26,7 @@ if (isset($_SESSION['user_name'])) {
         </div>
         <div class="nav-links">
             <a href="HomePage.php">HOME</></a>
-            <a href="about.php">ABOUT</a>
+            <a href="about.php" style="background-color: #ff9900; color: #fff; padding: 10px 15px; border-radius: 4px; text-decoration: none;">ABOUT</a>
             <a href="booking.php">BOOKING</a>
             <a href="history2.php">VIEW BOOKING HISTORY</a>
             <a href="order.php">DISHES</a>
@@ -35,6 +35,7 @@ if (isset($_SESSION['user_name'])) {
                 <a href="#" class="user-btn"><?php echo htmlspecialchars($userName); ?></a>
                 <div class="dropdown-content">
                     <a href="logout.php">Log Out</a>
+                    <a href="../information.php">Information</a>
                 </div>
             </div>
         </div>

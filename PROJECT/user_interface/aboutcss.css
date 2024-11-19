@@ -29,6 +29,7 @@ body::before {
     align-items: center;
     padding: 40px;
     background-color: rgba(0, 0, 0, 0.5); /* Adjust the opacity as needed */
+    
 }
 
 .navbar a {
@@ -41,13 +42,6 @@ body::before {
     color: #fff;
 }
 
-.navbar .nav-links a:nth-child(2) {
-    background-color: #ff9900;
-    color: #fff;
-    padding: 10px 15px;
-    border-radius: 4px;
-    text-decoration: none;
-}
 .header-content {
     display: flex;
     align-items: center;
@@ -113,11 +107,11 @@ body::before {
     display: none;
     position: absolute;
     background-color: #ffffff;
-    min-width: 160px;
+    min-width: fit-content;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
     border-radius: 8px;
     overflow: hidden;
-    z-index: 1;
+    z-index: 99;
     transition: opacity 0.3s ease, transform 0.3s ease;
     opacity: 0;
     transform: translateY(10px);
@@ -125,7 +119,7 @@ body::before {
 
 .dropdown-content a {
     color: #333;
-    padding: 12px 16px;
+    padding: 9px 16px;
     text-decoration: none;
     display: block;
     font-weight: bold;
@@ -133,14 +127,12 @@ body::before {
 }
 
 .dropdown-content a:hover {
-    background-color: #f4f4f9;
-    color: #e68a00;
+    background-color: #de6d17;
 }
 
 .dropdown:hover .dropdown-content {
     display: block;
     opacity: 1;
-    transform: translateY(0);
 }
 
 .vision-mission {

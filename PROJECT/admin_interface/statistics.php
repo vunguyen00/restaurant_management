@@ -127,11 +127,28 @@ if (isset($_POST['export_excel'])) {
         <div class="navbar">
             <a href="#">Home</a>
             <div class="dropdown">
-            <a href="#" class="user-btn"><?php echo htmlspecialchars($userName); ?></a>
+            <a href="#" class="user-btn" id="user-btn"><?php echo htmlspecialchars($userName); ?></a>
                 <div class="dropdown-content">
                     <a href="logout.php">Log Out</a>
+                    <a href="../information.php">Information</a>
                 </div>
             </div>
+            <script>
+                // JavaScript for the dropdown
+                var userBtn = document.getElementById('user-btn');
+                var dropdownContent = document.querySelector('.dropdown-content');
+
+                userBtn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
+                });
+
+                window.addEventListener('click', function (e) {
+                    if (!userBtn.contains(e.target) && !dropdownContent.contains(e.target)) {
+                        dropdownContent.style.display = 'none';
+                    }
+                });
+            </script>
         </div>
 
         <div class="statistics-section">

@@ -68,9 +68,10 @@ if (!$result) {
         <div class="navbar">
             <a href="#">Home</a>
             <div class="dropdown">
-            <a href="#" class="user-btn"><?php echo htmlspecialchars($userName); ?></a>
+            <a href="#" class="user-btn" id="user-btn"><?php echo htmlspecialchars($userName); ?></a>
                 <div class="dropdown-content">
                     <a href="logout.php">Log Out</a>
+                    <a href="../information.php">Information</a>
                 </div>
             </div>
         </div>
@@ -112,7 +113,7 @@ if (!$result) {
     </div>
     <script>
         // JavaScript for the dropdown
-        var userBtn = document.getElementById('userBtn');
+        var userBtn = document.getElementById('user-btn');
         var dropdownContent = document.querySelector('.dropdown-content');
 
         userBtn.addEventListener('click', function (e) {

@@ -52,11 +52,11 @@ $result = $stmt->get_result();
             <a href="booking.php">BOOKING</a>
             <a href="history2.php">VIEW BOOKING HISTORY</a>
             <a href="order.php">DISHES</a>
-            <!-- <a href="history.php">BILL</a> -->
             <div class="dropdown">
                 <a href="#" class="user-btn"><?php echo htmlspecialchars($userName); ?></a>
                 <div class="dropdown-content">
                     <a href="logout.php">Log Out</a>
+                    <a href="../information.php">Information</a>
                 </div>
             </div>
         </div>
@@ -93,6 +93,7 @@ $result = $stmt->get_result();
                 <?php endif; ?>
         </div>
     </div>
+    
 
 </body>
 </html>
