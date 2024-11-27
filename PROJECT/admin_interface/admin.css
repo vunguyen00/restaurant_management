@@ -590,13 +590,7 @@ button[type="submit"]:hover {
     color: green; /* Màu chữ cho user */
     text-align: right; /* Canh phải */
 }
-.chat-icon {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    font-size: 30px;
-    cursor: pointer;
-}
+
 
 .message-container {
     display: none;
@@ -628,13 +622,6 @@ button[type="submit"]:hover {
 .user-item:hover {
     background-color: #e1e3e6;
 }
-
-.chat-area {
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-}
-
 .message-header {
     font-weight: bold;
     margin-bottom: 10px;
@@ -669,11 +656,6 @@ button[type="submit"]:hover {
         width: 100%;
     }
 }
-
-
-
 .dashboard {
     margin-top: 20px;
 }
-
-

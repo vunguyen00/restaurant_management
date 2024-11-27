@@ -59,6 +59,7 @@ if (!$result_tables) {
             <a href="booking.php">BOOKING</a>
             <a href="history2.php">VIEW BOOKING HISTORY</a>
             <a href="order.php">DISHES</a>
+            <a href="../chat.php">CHAT</a>
             <!-- <a href="history.php">BILL</a> -->
             <div class="dropdown">
                 <a href="#" class="user-btn"><?php echo htmlspecialchars($userName); ?></a>

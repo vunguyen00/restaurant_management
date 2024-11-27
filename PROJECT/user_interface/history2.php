@@ -52,6 +52,7 @@ $result = $stmt->get_result();
             <a href="booking.php">BOOKING</a>
             <a href="history2.php">VIEW BOOKING HISTORY</a>
             <a href="order.php">DISHES</a>
+            <a href="../chat.php">CHAT</a>
             <div class="dropdown">
                 <a href="#" class="user-btn"><?php echo htmlspecialchars($userName); ?></a>
                 <div class="dropdown-content">

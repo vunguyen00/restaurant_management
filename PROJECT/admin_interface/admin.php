@@ -35,15 +35,6 @@ if ($adminResult->num_rows > 0) {
     }
 }
 
-// Get list of users for chat
-$userQuery = "SELECT user_name FROM user WHERE role != 1"; // Exclude admins
-$userResult = $mysqli->query($userQuery);
-$users = [];
-if ($userResult->num_rows > 0) {
-    while ($row = $userResult->fetch_assoc()) {
-        $users[] = $row['user_name'];
-    }
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -64,6 +55,7 @@ if ($userResult->num_rows > 0) {
             <li><a href="books.php">Bookings</a></li>
             <li><a href="statistics.php" class="button">Revenue & Dish Statistics</a></li>
             <li><a href="statistical.php">Revenue Statistics</a></li>
+            <li><a href="../chat.php">Chat with Users</a></li>
         </ul>
     </div>
 
@@ -128,31 +120,6 @@ if ($userResult->num_rows > 0) {
             </div>
         </div>
     </div>
-
-    <!-- Biểu tượng nhắn tin -->
-    <div class="chat-icon" id="chatIcon">&#128172;</div>
-
-    <!-- Giao diện nhắn tin -->
-    <div class="message-container" id="messageContainer">
-        <div class="message-header" id="messageHeader">Chat with User</div>
-        <div class="message-content" id="messageContent">
-            <!-- Messages will display here -->
-        </div>
-        <label for="userSelect">Select User:</label>
-        <select id="userSelect">
-            <option value="">Select a user</option>
-            <?php foreach ($users as $user): ?>
-                <option value="<?php echo htmlspecialchars($user); ?>"><?php echo htmlspecialchars($user); ?></option>
-            <?php endforeach; ?>
-        </select>
-        <form class="message-form" id="messageForm">
-            <input type="text" id="messageInput" placeholder="Type your message..." required>
-            <button type="submit">Send</button>
-        </form>
-    </div>
-
-    <!-- Các Modal -->
-    <!-- Add Table Modal -->
     <div id="addTableModal" class="modal">
         <div class="modal-content">
             <span class="close" id="closeAddTableModal">&times;</span>

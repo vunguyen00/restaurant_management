@@ -39,7 +39,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-<!-- Form đăng nhập -->
 <!DOCTYPE html>
 <html lang="vi">
 <head>

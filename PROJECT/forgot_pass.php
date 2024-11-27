@@ -166,7 +166,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify'])) {
     <div class="form-container">
         <!-- Form nhập thông tin người dùng -->
         <form action="" method="POST">
-            <label for="username">Tên người dùng:</label>
+            <label for="username">Tên đăng nhập:</label>
             <input type="text" name="username" required>
             
             <label for="phone_number">Số điện thoại:</label>
@@ -191,6 +191,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify'])) {
                 <button type="submit">Đổi mật khẩu</button>
             </form>
         </div>
+        <br>
+        <button class="show-btn" id="back-btn" onclick="history.back()">Back</button>
     </div>
 </body>
 </html>

@@ -114,13 +114,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['customer_name'])) {
     <div class="sidebar">
         <h2>LOGO</h2>
         <ul>
-            <li><a href="admin.php">Home</a></li>
+        <li><a href="admin.php">Home</a></li>
             <li><a href="admins.php">Admins</a></li>
             <li><a href="orders.php">Orders</a></li>
             <li><a href="foods.php">Foods</a></li>
             <li><a href="books.php">Bookings</a></li>
             <li><a href="statistics.php" class="button">Revenue & Dish Statistics</a></li>
             <li><a href="statistical.php">Revenue Statistics</a></li>
+            <li><a href="../chat.php">Chat with Users</a></li>
         </ul>
     </div>
     <div class="main-content">

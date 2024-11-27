@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 11, 2024 at 04:59 AM
+-- Generation Time: Nov 27, 2024 at 10:48 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -116,6 +116,36 @@ INSERT INTO `menu` (`dish_id`, `dish_name`, `dish_describe`, `price`, `image_pat
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `messages`
+--
+
+CREATE TABLE `messages` (
+  `message_id` int(11) NOT NULL,
+  `sender_id` int(11) NOT NULL,
+  `receiver_id` int(11) NOT NULL,
+  `message_content` text NOT NULL,
+  `sent_at` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `messages`
+--
+
+INSERT INTO `messages` (`message_id`, `sender_id`, `receiver_id`, `message_content`, `sent_at`) VALUES
+(1, 2, 3, 'trtryu', '2024-11-28 04:10:14'),
+(2, 3, 2, 'qw', '2024-11-28 04:10:57'),
+(3, 2, 3, 'ưqerwef', '2024-11-28 04:14:40'),
+(4, 3, 2, 'dsfa', '2024-11-28 04:15:13'),
+(5, 2, 3, 'dfgsdag', '2024-11-28 04:15:18'),
+(6, 2, 3, 'ẻtyrty', '2024-11-28 04:46:39'),
+(7, 2, 4, 'qưer', '2024-11-28 04:47:33'),
+(8, 4, 2, 'yuk\n', '2024-11-28 04:48:01'),
+(9, 4, 2, 'qưqwef', '2024-11-28 04:48:05'),
+(10, 2, 4, 'qửqwr', '2024-11-28 04:48:07');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `orders`
 --
 
@@ -165,7 +195,8 @@ INSERT INTO `orders` (`order_id`, `user_id`, `total_price`, `order_date`, `table
 (65, 2, 2324.00, '2024-10-29 10:52:32', 30, '2024-10-29 10:52:32', '43', 234),
 (66, 2, 222.00, '2024-11-10 17:49:47', 31, '2024-11-10 17:49:47', '3', 3),
 (67, 4, 3636.00, '2024-11-11 02:36:29', 28, '2024-11-11 02:36:29', '123', 0),
-(68, 4, 1212.00, '2024-11-11 02:38:54', 28, '2024-11-11 02:38:54', 'sdcac', 0);
+(68, 4, 1212.00, '2024-11-11 02:38:54', 28, '2024-11-11 02:38:54', 'sdcac', 0),
+(69, 2, 46.00, '2024-11-28 04:30:13', 30, '2024-11-28 04:30:13', 'vu', 771231243);
 
 -- --------------------------------------------------------
 
@@ -222,7 +253,8 @@ INSERT INTO `order_items` (`order_item_id`, `order_id`, `dish_name`, `quantity`,
 (88, 65, 'phượng hoàng gián', 1, 2324.00, NULL),
 (89, 66, 'sườn xào chua ngọt', 1, 222.00, NULL),
 (90, 67, 'trứng rán', 3, 1212.00, NULL),
-(91, 68, 'trứng rán', 1, 1212.00, NULL);
+(91, 68, 'trứng rán', 1, 1212.00, NULL),
+(92, 69, 'gà chiên ', 2, 23.00, NULL);
 
 -- --------------------------------------------------------
 
@@ -243,7 +275,7 @@ CREATE TABLE `restaurant_table` (
 
 INSERT INTO `restaurant_table` (`table_id`, `table_number`, `status`, `user_id`) VALUES
 (28, 2, 'empty', NULL),
-(30, 4, 'booked', 3),
+(30, 4, 'empty', 3),
 (31, 5, 'empty', NULL),
 (32, 6, 'empty', NULL);
 
@@ -295,7 +327,7 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`user_id`, `user_name`, `phone_number`, `email`, `password`, `role`) VALUES
 (2, 'vu01', 774303475, 'nguyenvu00304@gmail.com', '$2y$10$wbLfwustkWn9l9ptvZhih.Zw1lRbBAxWtQe9UmYxjh3jCUFvC7Mve', 1),
-(3, 'vu02', 2147483647, 'pimpompimpom4@gmail.com', '$2y$10$buj6FdOyU050oMJ/2.D4iuJms.WPjV0BrH5FxjovAfZ2GZXasweyW', 0),
+(3, 'vu02', 774303475, 'pimpompimpom4@gmail.com', '$2y$10$szor0vN29u.zzofsDIpPBOFVQd4ZkYUpbVfZwc5pgNJJkkslEXEhm', 0),
 (4, 'vu03', 2147483647, 'aoiuhfds@gmail.com', '$2y$10$WUpUXjQ5TlG/XJSq5VUYr.N/LU9QVVC4cmB/8wscfPJcre2CovanC', 0),
 (5, 'vugiau', 123456789, 'hoa@gmail.com', '$2y$10$yQWqMzTQ4pVBC31Nafhu0e0sNd0vI5Vdz0xeKTLkIP7XSiuXDkDX6', 0);
 
@@ -328,6 +360,14 @@ ALTER TABLE `ingredients`
 --
 ALTER TABLE `menu`
   ADD PRIMARY KEY (`dish_id`);
+
+--
+-- Indexes for table `messages`
+--
+ALTER TABLE `messages`
+  ADD PRIMARY KEY (`message_id`),
+  ADD KEY `sender_id` (`sender_id`),
+  ADD KEY `receiver_id` (`receiver_id`);
 
 --
 -- Indexes for table `orders`
@@ -378,16 +418,22 @@ ALTER TABLE `menu`
   MODIFY `dish_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
+-- AUTO_INCREMENT for table `messages`
+--
+ALTER TABLE `messages`
+  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
+  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
 
 --
 -- AUTO_INCREMENT for table `restaurant_table`
@@ -417,6 +463,13 @@ ALTER TABLE `booking_history`
 ALTER TABLE `dish_ingredients`
   ADD CONSTRAINT `dish_ingredients_ibfk_1` FOREIGN KEY (`dish_id`) REFERENCES `menu` (`dish_id`),
   ADD CONSTRAINT `dish_ingredients_ibfk_2` FOREIGN KEY (`ingredient_id`) REFERENCES `ingredients` (`ingredient_id`);
+
+--
+-- Constraints for table `messages`
+--
+ALTER TABLE `messages`
+  ADD CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`sender_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `messages_ibfk_2` FOREIGN KEY (`receiver_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `orders`

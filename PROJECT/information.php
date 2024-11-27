@@ -147,8 +147,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
 </head>
 <body>
     <div class="container">
+        <button class="show-btn" id="back-btn" onclick="history.back()">Back</button>
         <h1>My Information</h1>
-        <div>        <div class="info-box">
+        <div>        
+            <div class="info-box">
             <p><strong>Name:</strong> <?php echo htmlspecialchars($userInfo['user_name']); ?></p>
             <p><strong>Phone Number:</strong> <?php echo htmlspecialchars($userInfo['phone_number']); ?></p>
             <p><strong>Email:</strong> <?php echo htmlspecialchars($userInfo['email']); ?></p>
