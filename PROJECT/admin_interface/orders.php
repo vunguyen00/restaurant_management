@@ -18,7 +18,7 @@ if (isset($_SESSION['user_name'])) {
 }
 
 $searchResult = []; // Biến lưu trữ kết quả tìm kiếm
-$customerName = ''; // Biến để lưu tên khách hàng tìm kiếm
+$orderId = ''; 
 
 // Truy vấn để lấy tất cả đơn hàng đã thanh toán, bao gồm số bàn từ restaurant_table
 $sql = "SELECT o.order_id, o.total_price, o.order_date, o.payment_time, 
@@ -51,10 +51,11 @@ while ($row = $result->fetch_assoc()) {
 }
 
 // Kiểm tra nếu có yêu cầu tìm kiếm theo tên khách hàng
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['customer_name'])) {
-    $customerName = $_POST['customer_name'];
+// Kiểm tra nếu có yêu cầu tìm kiếm theo order_id
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['order_id'])) {
+    $orderId = $_POST['order_id'];
 
-    // Truy vấn để lấy thông tin đơn hàng đã thanh toán dựa trên tên khách hàng, bao gồm số bàn
+    // Truy vấn để lấy thông tin đơn hàng đã thanh toán dựa trên order_id, bao gồm số bàn
     $sql = "SELECT o.order_id, o.total_price, o.order_date, o.payment_time, 
                    o.customer_name, u.user_name AS admin_user_name, 
                    o.customer_phone, 
@@ -64,15 +65,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['customer_name'])) {
             LEFT JOIN user u ON o.user_id = u.user_id
             LEFT JOIN order_items oi ON o.order_id = oi.order_id
             LEFT JOIN restaurant_table rt ON o.table_id = rt.table_id
-            WHERE o.customer_name LIKE ? ";
+            WHERE o.order_id = ?";
+
     $stmt = $mysqli->prepare($sql);
     
     if (!$stmt) {
         die("SQL preparation failed: " . $mysqli->error);
     }
 
-    $customerNameParam = "%" . $customerName . "%"; // Sử dụng dấu % để tìm kiếm tương đối
-    $stmt->bind_param("s", $customerNameParam); // customerName là kiểu chuỗi
+    $stmt->bind_param("i", $orderId); // order_id là kiểu số nguyên
     if (!$stmt->execute()) {
         die("Execution failed: " . $stmt->error); // Handle execution error
     }
@@ -101,6 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['customer_name'])) {
         }
     }
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -156,7 +158,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['customer_name'])) {
         <div class="orders-section">
             <h2>Orders</h2>
             <form method="POST" action="">
-                <input type="text" name="customer_name" placeholder="Enter Customer Name" value="<?php echo htmlspecialchars($customerName); ?>" required>
+                <input type="text" name="order_id" placeholder="Enter Customer Name" value="<?php echo htmlspecialchars($orderId); ?>" required>
                 <button type="submit">Search</button>
             </form>
 

@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
 
             // Nội dung email
             $mail->isHTML(true);
-            $mail->Subject = 'Mã xác thực quên mật khẩu';
+            $mail->Subject = 'Ma xac thuc doi mat khau';
             $mail->Body    = 'Mã xác thực của bạn là: ' . $verificationCode;
 
             // Gửi email
